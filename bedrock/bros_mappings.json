@@ -1,0 +1,526 @@
+{
+ "format_version": 2,
+ "items": {
+  "minecraft:totem_of_undying": [
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_night",
+    "display_name": "Талисман Ночи",
+    "bedrock_options": {
+     "icon": "bros_talisman_night",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_night"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_miner",
+    "display_name": "Талисман Шахтёра",
+    "bedrock_options": {
+     "icon": "bros_talisman_miner",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_miner"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_angler",
+    "display_name": "Талисман Рыбака",
+    "bedrock_options": {
+     "icon": "bros_talisman_angler",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_angler"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_sage",
+    "display_name": "Талисман Мудреца",
+    "bedrock_options": {
+     "icon": "bros_talisman_sage",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_sage"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_wind",
+    "display_name": "Талисман Ветра",
+    "bedrock_options": {
+     "icon": "bros_talisman_wind",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_wind"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_abyss",
+    "display_name": "Талисман Глубин",
+    "bedrock_options": {
+     "icon": "bros_talisman_abyss",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_abyss"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_harvest",
+    "display_name": "Талисман Жнеца",
+    "bedrock_options": {
+     "icon": "bros_talisman_harvest",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_harvest"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_fortune",
+    "display_name": "Талисман Фортуны",
+    "bedrock_options": {
+     "icon": "bros_talisman_fortune",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_fortune"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_guard",
+    "display_name": "Талисман Стража",
+    "bedrock_options": {
+     "icon": "bros_talisman_guard",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_guard"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_fury",
+    "display_name": "Талисман Ярости",
+    "bedrock_options": {
+     "icon": "bros_talisman_fury",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_fury"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_vampire",
+    "display_name": "Талисман Вампира",
+    "bedrock_options": {
+     "icon": "bros_talisman_vampire",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_vampire"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_berserk",
+    "display_name": "Талисман Берсерка",
+    "bedrock_options": {
+     "icon": "bros_talisman_berserk",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_berserk"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_builder",
+    "display_name": "Талисман Зодчего",
+    "bedrock_options": {
+     "icon": "bros_talisman_builder",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_builder"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_titan",
+    "display_name": "Талисман Титана",
+    "bedrock_options": {
+     "icon": "bros_talisman_titan",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_titan"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_phoenix",
+    "display_name": "Талисман Феникса",
+    "bedrock_options": {
+     "icon": "bros_talisman_phoenix",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_phoenix"
+    }
+   },
+   {
+    "type": "definition",
+    "model": "minecraft:totem_of_undying",
+    "bedrock_identifier": "bros:talisman_dragon",
+    "display_name": "Драконит",
+    "bedrock_options": {
+     "icon": "bros_talisman_dragon",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_dragon"
+    }
+   }
+  ],
+  "minecraft:netherite_scrap": [
+   {
+    "type": "definition",
+    "model": "minecraft:netherite_scrap",
+    "bedrock_identifier": "bros:trap",
+    "display_name": "Трапка",
+    "bedrock_options": {
+     "icon": "bros_trap",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_trap"
+    }
+   }
+  ],
+  "minecraft:iron_sword": [
+   {
+    "type": "definition",
+    "model": "minecraft:iron_sword",
+    "bedrock_identifier": "bros:zeus_iron",
+    "display_name": "Меч Зевса",
+    "bedrock_options": {
+     "icon": "bros_zeus",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_zeus"
+    }
+   }
+  ],
+  "minecraft:diamond_sword": [
+   {
+    "type": "definition",
+    "model": "minecraft:diamond_sword",
+    "bedrock_identifier": "bros:zeus_diamond",
+    "display_name": "Меч Зевса",
+    "bedrock_options": {
+     "icon": "bros_zeus",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_zeus"
+    }
+   }
+  ],
+  "minecraft:netherite_sword": [
+   {
+    "type": "definition",
+    "model": "minecraft:netherite_sword",
+    "bedrock_identifier": "bros:zeus_netherite",
+    "display_name": "Меч Зевса",
+    "bedrock_options": {
+     "icon": "bros_zeus",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_zeus"
+    }
+   }
+  ],
+  "minecraft:iron_pickaxe": [
+   {
+    "type": "definition",
+    "model": "minecraft:iron_pickaxe",
+    "bedrock_identifier": "bros:drill_iron",
+    "display_name": "Бур",
+    "bedrock_options": {
+     "icon": "bros_drill",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_drill"
+    }
+   }
+  ],
+  "minecraft:diamond_pickaxe": [
+   {
+    "type": "definition",
+    "model": "minecraft:diamond_pickaxe",
+    "bedrock_identifier": "bros:drill_diamond",
+    "display_name": "Бур",
+    "bedrock_options": {
+     "icon": "bros_drill",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_drill"
+    }
+   }
+  ],
+  "minecraft:netherite_pickaxe": [
+   {
+    "type": "definition",
+    "model": "minecraft:netherite_pickaxe",
+    "bedrock_identifier": "bros:drill_netherite",
+    "display_name": "Бур",
+    "bedrock_options": {
+     "icon": "bros_drill",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_drill"
+    }
+   }
+  ],
+  "minecraft:iron_axe": [
+   {
+    "type": "definition",
+    "model": "minecraft:iron_axe",
+    "bedrock_identifier": "bros:lumber_iron",
+    "display_name": "Лесоруб",
+    "bedrock_options": {
+     "icon": "bros_lumber",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_lumber"
+    }
+   }
+  ],
+  "minecraft:diamond_axe": [
+   {
+    "type": "definition",
+    "model": "minecraft:diamond_axe",
+    "bedrock_identifier": "bros:lumber_diamond",
+    "display_name": "Лесоруб",
+    "bedrock_options": {
+     "icon": "bros_lumber",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_lumber"
+    }
+   }
+  ],
+  "minecraft:netherite_axe": [
+   {
+    "type": "definition",
+    "model": "minecraft:netherite_axe",
+    "bedrock_identifier": "bros:lumber_netherite",
+    "display_name": "Лесоруб",
+    "bedrock_options": {
+     "icon": "bros_lumber",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_lumber"
+    }
+   }
+  ],
+  "minecraft:netherite_hoe": [
+   {
+    "type": "definition",
+    "model": "minecraft:netherite_hoe",
+    "bedrock_identifier": "bros:scythe_netherite",
+    "display_name": "Незерская коса",
+    "bedrock_options": {
+     "icon": "bros_scythe",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_scythe"
+    }
+   }
+  ],
+  "minecraft:nether_star": [
+   {
+    "type": "definition",
+    "model": "minecraft:nether_star",
+    "bedrock_identifier": "bros:ascension_core",
+    "display_name": "Ядро вознесения",
+    "bedrock_options": {
+     "icon": "bros_core",
+     "allow_offhand": true,
+     "display_handheld": false
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_core"
+    }
+   }
+  ],
+  "minecraft:diamond_hoe": [
+   {
+    "type": "definition",
+    "model": "minecraft:diamond_hoe",
+    "bedrock_identifier": "bros:scythe_soul",
+    "display_name": "Незерская коса IV",
+    "bedrock_options": {
+     "icon": "bros_scythe_4",
+     "allow_offhand": true,
+     "display_handheld": true
+    },
+    "predicate": {
+     "type": "match",
+     "property": "custom_model_data",
+     "index": 0,
+     "value": "bros_scythe"
+    }
+   }
+  ]
+ }
+}
