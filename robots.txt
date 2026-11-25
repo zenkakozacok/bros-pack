@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bros-mc.com/sitemap.xml

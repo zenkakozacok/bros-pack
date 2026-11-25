@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bros-MC — анархия Minecraft Java и Bedrock</title>
+<meta name="description" content="Bros-MC — анархия Minecraft: гриф, рейды, PvP, кланы, гильдии с квестами, боссы в замках, дуэли с ботом, боевой пропуск. Java 1.21.11 – 26.3 и Bedrock. Адрес: play.bros-mc.com">
+<link rel="canonical" href="https://bros-mc.com/">
+<meta property="og:title" content="Bros-MC — анархия Minecraft">
+<meta property="og:description" content="Гриф, рейды, PvP, кланы, боссы, дуэли. Java и Bedrock. play.bros-mc.com">
+<meta property="og:image" content="https://bros-mc.com/og.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#120c1e">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@600;700&display=swap">
+<style>
+:root{
+  --bg1:#120c1e;--bg2:#08060e;--panel:#161122;--card:#1e172e;--card2:#281f3c;--border:#34294c;
+  --gold:#ffb828;--orange:#ff761a;--violet:#8c3cff;--text:#f0eafa;--muted:#9e92b6;--green:#54d680;--red:#e6505a;
+  --r:16px;--f:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html{background:var(--bg2)}
+body{margin:0;min-height:100vh;color:var(--text);font:16px/1.55 var(--f);background:transparent;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-3;background:linear-gradient(180deg,var(--bg1),var(--bg2))}
+a{color:var(--gold)}
+code{font-family:var(--mono);font-size:.92em;background:#ffffff10;border:1px solid #ffffff14;padding:1px 6px;border-radius:6px}
+#fx{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.glow{position:fixed;z-index:-2;border-radius:50%;filter:blur(90px);opacity:.35;pointer-events:none}
+.glow.a{width:520px;height:520px;right:-140px;top:-120px;background:var(--orange)}
+.glow.b{width:480px;height:480px;left:-160px;bottom:-140px;background:var(--violet)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* --- шапка --- */
+.top{position:sticky;top:0;z-index:20;background:#0a0712cc;backdrop-filter:blur(12px);border-bottom:1px solid #ffffff10}
+.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:900;font-size:19px;letter-spacing:.3px}
+.brand img{width:34px;height:34px;image-rendering:pixelated}
+.brand b{color:var(--gold)}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14.5px;padding:8px 12px;border-radius:10px;transition:.15s}
+.nav a:hover,.nav a.on{color:var(--text);background:var(--card2)}
+.nav a.shop{color:#1a1206;background:linear-gradient(90deg,var(--gold),var(--orange))}
+.lang{display:flex;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.lang button{all:unset;cursor:pointer;padding:6px 10px;font-weight:800;font-size:12.5px;color:var(--muted)}
+.lang button[aria-pressed=true]{background:var(--card2);color:var(--gold)}
+.burger{all:unset;display:none;cursor:pointer;width:40px;height:40px;border-radius:10px;background:var(--card);border:1px solid var(--border);position:relative}
+.burger i,.burger i:before,.burger i:after{position:absolute;left:11px;width:18px;height:2px;background:var(--text);content:"";border-radius:2px}
+.burger i{top:19px}.burger i:before{top:-6px;left:0}.burger i:after{top:6px;left:0}
+@media(max-width:860px){
+  .burger{display:block}
+  .nav{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:#0d0917f2;padding:10px 16px 16px;border-bottom:1px solid var(--border)}
+  .nav.open{display:flex}
+  .nav a{padding:12px}
+  .top .wrap{gap:10px}
+  .lang{margin-left:auto}
+}
+
+/* --- кнопки, карточки --- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:0;font:800 15px var(--f);padding:12px 20px;border-radius:12px;text-decoration:none;transition:transform .12s,filter .12s,background .15s}
+.btn:active{transform:scale(.97)}
+.btn-gold{color:#1a1206;background:linear-gradient(90deg,var(--gold),var(--orange));box-shadow:0 6px 24px #ff761a40}
+.btn-gold:hover{filter:brightness(1.08)}
+.btn-ghost{color:var(--text);background:var(--card);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--card2);border-color:#5a4a78}
+.btn-sm{padding:8px 14px;font-size:13.5px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r)}
+.eyebrow{display:inline-block;font-weight:800;font-size:12.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold)}
+h1,h2,h3{margin:0;line-height:1.15}
+h2{font-size:clamp(26px,4vw,36px);font-weight:900;margin:6px 0 10px}
+.sub{color:var(--muted);max-width:640px;margin:0 0 26px}
+section.view{display:none;padding:42px 0 70px;animation:in .35s ease}
+section.view.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* --- главная --- */
+.hero{text-align:center;padding:40px 0 10px}
+.hero .logo{width:112px;height:112px;image-rendering:pixelated;filter:drop-shadow(0 10px 40px #ff8c1a66);animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.hero h1{font-size:clamp(44px,9vw,84px);font-weight:900;letter-spacing:-1px;margin:14px 0 6px}
+.hero h1 b{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:620px;margin:0 auto 22px;font-size:17px}
+.status{display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:8px 8px 8px 16px;margin-bottom:26px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--green);box-shadow:0 0 0 0 #54d68088;animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px #54d68000}}
+.status code{background:none;border:0;font-size:15px;color:var(--text)}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+@media(max-width:860px){.menu{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.menu{grid-template-columns:1fr}}
+.tile{position:relative;display:block;text-decoration:none;color:var(--text);padding:22px 20px;overflow:hidden;transition:transform .15s,border-color .15s,background .15s;text-align:left}
+.tile:hover{transform:translateY(-3px);border-color:var(--gold);background:var(--card2)}
+.tile .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:#ff8c1e26;margin-bottom:12px}
+.tile h3{font-size:19px;font-weight:800;margin-bottom:4px}
+.tile p{margin:0;color:var(--muted);font-size:14.5px}
+.tile.big{grid-column:span 1;background:linear-gradient(135deg,#2c1a46,#46241f);border-color:#ffb82855}
+.tile .go{position:absolute;right:18px;top:20px;color:var(--gold);font-weight:900;font-size:20px;opacity:.6;transition:.15s}
+.tile:hover .go{opacity:1;transform:translateX(3px)}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:34px}
+@media(max-width:860px){.feats{grid-template-columns:repeat(2,1fr)}}
+.feat{padding:16px}
+.feat b{display:block;font-size:15px;margin-bottom:3px}
+.feat span{color:var(--muted);font-size:13.5px}
+
+/* --- играть --- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.step{padding:22px}
+.step h3{font-size:20px;margin-bottom:10px}
+.step ol{margin:0;padding-left:20px;color:#d9d0ea}
+.step li{margin:6px 0}
+.ip{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c0915;border:1px solid var(--border);border-radius:12px;padding:10px 10px 10px 14px;margin:12px 0}
+.ip small{display:block;color:var(--muted);font-size:12px}
+.ip code{background:none;border:0;padding:0;font-size:15.5px}
+
+/* --- магазин --- */
+.nickbox{padding:20px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end;margin-bottom:28px}
+@media(max-width:640px){.nickbox{grid-template-columns:1fr}}
+label.f{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+input.in,select.in,textarea.in{width:100%;font:500 16px var(--f);color:var(--text);background:#0c0915;border:1px solid var(--border);border-radius:12px;padding:12px 14px;outline:none;transition:border-color .15s}
+input.in:focus,select.in:focus,textarea.in:focus{border-color:var(--gold)}
+textarea.in{min-height:130px;resize:vertical}
+.check{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:8px;cursor:pointer}
+.check input{accent-color:var(--gold);width:17px;height:17px}
+.cat{margin:34px 0 12px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.cat h3{font-size:24px;font-weight:900}
+.cat span{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.item{all:unset;box-sizing:border-box;cursor:pointer;position:relative;padding:16px;border-radius:var(--r);background:var(--card);border:1px solid var(--border);transition:transform .12s,border-color .15s,background .15s;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.item:hover{transform:translateY(-2px);background:var(--card2)}
+.item:focus-visible{outline:2px solid var(--gold)}
+.item.sel{border-color:var(--gold);background:linear-gradient(180deg,#3b2630,var(--card2));box-shadow:0 0 0 1px var(--gold) inset}
+.item .nm{font-weight:900;font-size:17px;line-height:1.2}
+.item .pr{font-family:var(--mono);font-weight:700;font-size:20px;margin-top:auto}
+.item .pr small{font-family:var(--f);font-weight:500;font-size:12px;color:var(--muted)}
+.badge{position:absolute;top:10px;right:10px;font-size:11px;font-weight:900;padding:3px 7px;border-radius:7px;background:var(--gold);color:#1a1206;text-transform:uppercase}
+.badge.soon{background:#ffffff1f;color:var(--muted)}
+.bar{height:4px;border-radius:4px;width:42px;margin-bottom:14px}
+.detail{display:none;margin-top:14px;padding:22px;animation:in .25s ease}
+.detail.on{display:block}
+.detail h4{margin:0 0 4px;font-size:22px;font-weight:900}
+.detail .lead{color:var(--muted);margin:0 0 14px}
+.perks{list-style:none;padding:0;margin:0 0 16px;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+@media(max-width:640px){.perks{grid-template-columns:1fr}}
+.perks li{position:relative;padding-left:22px;color:#ddd4ee;font-size:14.5px}
+.perks li:before{content:"✦";position:absolute;left:0;color:var(--gold);font-size:13px;top:1px}
+.odds{display:flex;flex-direction:column;gap:7px;margin:0 0 16px;max-width:520px}
+.odd{display:grid;grid-template-columns:110px 1fr 54px;gap:10px;align-items:center;font-size:14px}
+.odd .t{height:9px;background:#ffffff10;border-radius:9px;overflow:hidden}
+.odd .t i{display:block;height:100%;border-radius:9px}
+.odd b{text-align:right;font-family:var(--mono)}
+.buyrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:16px}
+.buyrow .sum{font-family:var(--mono);font-weight:700;font-size:24px;margin-right:auto}
+.buyrow .sum small{display:block;font:500 12.5px var(--f);color:var(--muted)}
+.qty{display:flex;align-items:center;background:#0c0915;border:1px solid var(--border);border-radius:12px}
+.qty button{all:unset;cursor:pointer;width:38px;height:42px;text-align:center;font-weight:900;font-size:18px;color:var(--gold)}
+.qty span{min-width:30px;text-align:center;font-family:var(--mono);font-weight:700}
+.note{color:var(--muted);font-size:13.5px;margin-top:10px}
+.msg{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14.5px;display:none}
+.msg.on{display:block}
+.msg.ok{background:#54d68018;border:1px solid #54d68055}
+.msg.err{background:#e6505a18;border:1px solid #e6505a66}
+.msg.info{background:#ffb82814;border:1px solid #ffb82855}
+
+/* --- правила / вопросы --- */
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:860px){.rules{grid-template-columns:1fr}}
+.rule{padding:20px}
+.rule h3{font-size:18px;margin-bottom:8px}
+.rule.ok h3{color:var(--green)}.rule.no h3{color:#ff7a82}
+.rule ul,.rule ol{margin:0;padding-left:20px;color:#d9d0ea;font-size:14.5px}
+.rule li{margin:5px 0}
+.faq details{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.faq summary{cursor:pointer;padding:16px 18px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";color:var(--gold);font-weight:900;font-size:20px;line-height:1}
+.faq details[open] summary:after{content:"−"}
+.faq p{margin:0;padding:0 18px 16px;color:#d9d0ea}
+
+/* --- поддержка --- */
+.support{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+@media(max-width:860px){.support{grid-template-columns:1fr}}
+.form{padding:22px;display:grid;gap:14px}
+.form .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.form .row2{grid-template-columns:1fr}}
+.side{padding:22px}
+.side h3{font-size:18px;margin-bottom:8px}
+.side p{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.hp{position:absolute;left:-9999px}
+.drop{display:flex;align-items:center;gap:14px;padding:16px;border:2px dashed var(--border);border-radius:14px;background:#0c0915;cursor:pointer;transition:.15s;min-height:64px}
+.drop:hover,.drop.over{border-color:var(--gold);background:#1a1324}
+.drop input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.drop-ic{font-size:26px}.drop small{color:var(--muted)}
+.files{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
+.fl{position:relative;border-radius:10px;overflow:hidden;background:#0c0915;border:1px solid var(--border);aspect-ratio:1}
+.fl img,.fl video{width:100%;height:100%;object-fit:cover;display:block}
+.fl span{position:absolute;left:0;right:0;bottom:0;font-size:11px;padding:3px 6px;background:#000a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl button{all:unset;cursor:pointer;position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:#000b;text-align:center;line-height:24px;font-weight:900}
+.prog{position:relative;height:30px;border-radius:10px;background:#0c0915;border:1px solid var(--border);overflow:hidden}
+.prog i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--gold),var(--orange));transition:width .2s}
+.prog span{position:relative;display:block;text-align:center;line-height:30px;font-weight:800;font-size:13px;color:#fff;text-shadow:0 1px 2px #000}
+.done{text-align:center;padding:26px 10px}
+.done .big{font-size:44px}.done h3{font-size:22px;margin:6px 0}.done p{color:var(--muted);margin:6px 0}
+
+.gd h2{margin-top:0}.gd h3{font-size:21px;margin:30px 0 10px}.gd p,.gd li{color:#ddd4ee}.gd ul,.gd ol{padding-left:20px}.gd li{margin:6px 0}
+.gd .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:860px){.gd .cols{grid-template-columns:1fr}}
+.gd .box{padding:18px}.gd .box h4{margin:0 0 8px;font-size:18px;display:flex;align-items:center;flex-wrap:wrap}.gd .box p{margin:5px 0;font-size:14.5px}
+.gd .ico{width:44px;height:44px;image-rendering:pixelated;margin-right:8px}
+.craft{display:inline-flex;align-items:center;gap:14px;background:#c6c6c6;border:3px solid;border-color:#fff #555 #555 #fff;padding:10px 14px 14px;border-radius:4px;margin:8px 12px 8px 0;box-shadow:0 8px 24px #0006;vertical-align:top}
+.craft .ttl{font:700 14px var(--f);color:#3f3f3f;margin-bottom:6px}
+.craft .gr{display:grid;grid-template-columns:repeat(3,40px);gap:0}
+.craft .sl{width:40px;height:40px;background:#8b8b8b;border:2px solid;border-color:#373737 #fff #fff #373737;display:grid;place-items:center;position:relative}
+.craft .sl img{width:32px;height:32px;image-rendering:pixelated}
+.craft .out{width:54px;height:54px}.craft .out img{width:40px;height:40px;image-rendering:pixelated}
+.craft .ar{position:relative;width:30px;height:24px;margin-top:20px}
+.craft .ar:before{content:"";position:absolute;left:0;top:7px;width:16px;height:10px;background:#8b8b8b}
+.craft .ar:after{content:"";position:absolute;left:16px;top:0;border-left:14px solid #8b8b8b;border-top:12px solid transparent;border-bottom:12px solid transparent}
+.craft .n{position:absolute;right:2px;bottom:0;font:800 17px var(--mono);color:#fff;text-shadow:2px 2px #3f3f3f}
+.fur{display:grid;grid-template-columns:40px 30px 54px;grid-template-rows:40px 26px 40px;gap:4px 10px;align-items:center}
+.fur .fire{grid-column:1;grid-row:2;text-align:center;font-size:18px}
+.mark{display:flex;align-items:center;gap:8px;font-size:14px;margin:6px 0;flex-wrap:wrap}.mark img{width:28px;height:28px;image-rendering:pixelated}
+footer{border-top:1px solid #ffffff10;padding:26px 0 40px;color:var(--muted);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer .links{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--card2);border:1px solid var(--gold);padding:10px 18px;border-radius:12px;font-weight:700;transition:.25s;z-index:50;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow a"></div><div class="glow b"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" data-go="home"><img src="logo.png" alt=""><span>Bros<b>MC</b></span></a>
+    <nav class="nav" id="nav">
+      <a href="#home" data-go="home" data-en="Home">Главная</a>
+      <a href="#play" data-go="play" data-en="Play">Играть</a>
+      <a href="#features" data-go="features" data-en="Features">Что есть</a>
+      <a href="#rules" data-go="rules" data-en="Rules">Правила</a>
+      <a href="#help" data-go="help" data-en="Support">Поддержка</a>
+      <a href="#shop" data-go="shop" class="shop" data-en="Donate">Донат</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Язык / Language">
+      <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="burger" id="burger" type="button" aria-label="Меню" aria-expanded="false"><i></i></button>
+  </div>
+</header>
+
+<main>
+<!-- ================= ГЛАВНАЯ ================= -->
+<section class="view" id="v-home">
+  <div class="wrap">
+    <div class="hero">
+      <img class="logo" src="logo.png" alt="Bros-MC">
+      <h1>Bros<b>MC</b></h1>
+      <p data-en="Minecraft anarchy: griefing, raids, PvP and traps are allowed. Clans, guilds with quests, castle bosses, duels with a smart bot and a battle pass. Play from a PC or a phone.">Анархия Minecraft: гриф, рейды, PvP и ловушки разрешены. Кланы, гильдии с квестами, боссы в замках, дуэли с умным ботом и боевой пропуск. Заходи с компьютера или телефона.</p>
+      <div class="status">
+        <span class="dot" id="st-dot"></span>
+        <span id="st-text" data-en="Checking the server…">Проверяем сервер…</span>
+        <code>play.bros-mc.com</code>
+        <button class="btn btn-gold btn-sm" type="button" data-copy="play.bros-mc.com" data-en="Copy">Копировать</button>
+      </div>
+    </div>
+    <div class="menu">
+      <a class="tile card big" href="#play" data-go="play"><span class="go">→</span><div class="ic">▶</div><h3 data-en="Play">Играть</h3><p data-en="How to join from Java and Bedrock, versions, address">Как зайти с Java и Bedrock, версии, адрес</p></a>
+      <a class="tile card big" href="#shop" data-go="shop"><span class="go">→</span><div class="ic">👑</div><h3 data-en="Donate">Донат</h3><p data-en="Ranks, case keys, battle pass and in-game money">Привилегии, ключи кейсов, боевой пропуск и игровые деньги</p></a>
+      <a class="tile card" href="#features" data-go="features"><span class="go">→</span><div class="ic">⚔</div><h3 data-en="What's on the server">Что есть на сервере</h3><p data-en="Bosses, duels, guilds, auto-mine, events">Боссы, дуэли, гильдии, автошахта, ивенты</p></a>
+      <a class="tile card" href="#rules" data-go="rules"><span class="go">→</span><div class="ic">📜</div><h3 data-en="Rules">Правила</h3><p data-en="What's allowed and what gets you banned">Что можно, а за что бан</p></a>
+      <a class="tile card" href="#help" data-go="help"><span class="go">→</span><div class="ic">💬</div><h3 data-en="Support">Поддержка</h3><p data-en="Questions, problems, purchases — write to us">Вопросы, проблемы, покупки — напиши нам</p></a>
+      <a class="tile card" href="https://discord.gg/5RdwEwAwhk" target="_blank" rel="noopener"><span class="go">↗</span><div class="ic">🎧</div><h3>Discord · Telegram</h3><p data-en="News, giveaways, the community">Новости, розыгрыши, общение</p></a>
+    </div>
+    <div class="feats">
+      <div class="feat card"><b>Java 1.21.11 – 26.3</b><span data-en="Join with the version you have">Заходи с той версией, что есть</span></div>
+      <div class="feat card"><b>Bedrock</b><span data-en="Phone, tablet, console">Телефон, планшет, консоль</span></div>
+      <div class="feat card"><b data-en="No license needed">Без лицензии</b><span data-en="Any launcher works">Подойдёт любой лаунчер</span></div>
+      <div class="feat card"><b data-en="Server in Germany">Сервер в Германии</b><span data-en="Good ping across Europe and the CIS">Хороший пинг по Европе и СНГ</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ИГРАТЬ ================= -->
+<section class="view" id="v-play">
+  <div class="wrap">
+    <span class="eyebrow" data-en="How to join">Как зайти</span>
+    <h2 data-en="Two minutes and you're in">Две минуты — и ты в игре</h2>
+    <p class="sub" data-en="One address for everyone. Java and Bedrock players play together on the same server.">Один адрес для всех. Игроки с Java и Bedrock играют вместе на одном сервере.</p>
+    <div class="two">
+      <div class="step card">
+        <h3>💻 Java <span style="color:var(--muted);font-weight:600;font-size:15px">(PC)</span></h3>
+        <div class="ip"><div><small data-en="Address">Адрес</small><code>play.bros-mc.com</code></div><button class="btn btn-ghost btn-sm" type="button" data-copy="play.bros-mc.com" data-en="Copy">Копировать</button></div>
+        <div class="ip"><div><small data-en="or the short one">или короткий</small><code>bros-mc.com</code></div><button class="btn btn-ghost btn-sm" type="button" data-copy="bros-mc.com" data-en="Copy">Копировать</button></div>
+        <ol>
+          <li data-en="Start Minecraft &lt;b&gt;1.21.11 – 26.3&lt;/b&gt;. No need to install an older version: join with the one you have.">Запусти Minecraft <b>1.21.11 – 26.3</b>. Старую версию специально ставить не нужно: заходи с той, что есть.</li>
+          <li data-en="Multiplayer → Add server → paste the address.">Сетевая игра → Добавить сервер → вставь адрес.</li>
+          <li data-en="Accept the resource pack — it's required (textures of bosses, armor and items).">Прими ресурспак — он обязателен (текстуры боссов, брони и предметов).</li>
+          <li data-en="The first time, the server asks you to come up with a password — just follow the hint in chat. After that it lets you in by itself.">В первый раз сервер сам попросит придумать пароль — просто следуй подсказке в чате. Дальше он будет пускать сам.</li>
+          <li data-en="You appear at spawn: the compass in your hotbar or &lt;code&gt;/menu&lt;/code&gt; opens the server menu, &lt;code&gt;/rtp&lt;/code&gt; — a random teleport into the wild.">Ты появишься на спавне: компас в хотбаре или <code>/menu</code> открывает меню сервера, <code>/rtp</code> — случайный телепорт в дикий мир.</li>
+        </ol>
+        <p class="note" data-en="Any launcher works, a license is not needed. Voice chat: the Simple Voice Chat mod.">Подойдёт любой лаунчер, лицензия не нужна. Голосовой чат — мод Simple Voice Chat.</p>
+      </div>
+      <div class="step card">
+        <h3>📱 Bedrock <span style="color:var(--muted);font-weight:600;font-size:15px" data-en="(phone, tablet, console)">(телефон, планшет, консоль)</span></h3>
+        <div class="ip"><div><small data-en="Address · port 19132">Адрес · порт 19132</small><code>play.bros-mc.com</code></div><button class="btn btn-ghost btn-sm" type="button" data-copy="play.bros-mc.com" data-en="Copy">Копировать</button></div>
+        <ol>
+          <li data-en="Update Minecraft to the latest version in your app store.">Обнови Minecraft до последней версии в магазине приложений.</li>
+          <li data-en="Play → Servers → Add server: address &lt;code&gt;play.bros-mc.com&lt;/code&gt;, port &lt;code&gt;19132&lt;/code&gt;.">Играть → Серверы → Добавить сервер: адрес <code>play.bros-mc.com</code>, порт <code>19132</code>.</li>
+          <li data-en="Accept the resource pack, and the first time come up with a password when the server asks.">Прими ресурспак и в первый раз придумай пароль, когда сервер попросит.</li>
+          <li data-en="On the server your nick gets the &lt;code&gt;[BK]&lt;/code&gt; prefix — that's normal.">На сервере перед ником будет <code>[BK]</code> — так и должно быть.</li>
+        </ol>
+        <p class="note" data-en="Java and Bedrock version numbers don't match: don't look for Bedrock «1.21.11», just update.">Номера версий Java и Bedrock не совпадают: не ищи Bedrock «1.21.11», просто обнови игру.</p>
+      </div>
+    </div>
+    <div class="card step" style="margin-top:16px">
+      <h3 data-en="🚀 Our launcher — soon">🚀 Свой лаунчер — скоро</h3>
+      <p class="note" style="margin:0" data-en="We're making our own launcher with the server pre-installed. Follow the news in Discord and Telegram.">Делаем свой лаунчер, в котором сервер уже добавлен. Следи за новостями в Discord и Telegram.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЧТО ЕСТЬ ================= -->
+<section class="view" id="v-features">
+  <div class="wrap">
+    <span class="eyebrow" data-en="What awaits you">Что тебя ждёт</span>
+    <h2 data-en="Survive your way">Выживай как хочешь</h2>
+    <p class="sub" data-en="Anarchy with a lot of our own content: none of this is on regular servers.">Анархия с кучей своего контента: на обычных серверах такого нет.</p>
+    <div class="menu" id="feat-grid"></div>
+  </div>
+</section>
+
+<!-- ================= ГАЙД ================= -->
+<section class="view" id="v-guide">
+  <div class="wrap">
+    <a class="btn btn-ghost btn-sm" href="#features" data-go="features" data-en="← Everything about the server">← Всё о сервере</a>
+    <div id="guide" style="margin-top:18px"></div>
+  </div>
+</section>
+
+<!-- ================= ДОНАТ ================= -->
+<section class="view" id="v-shop">
+  <div class="wrap">
+    <span class="eyebrow" data-en="Donate">Донат</span>
+    <h2 data-en="Support the server">Поддержи сервер</h2>
+    <p class="sub" data-en="Everything is delivered to the server automatically within a couple of minutes. Ranks are permanent and survive wipes.">Всё приходит на сервер само за пару минут. Привилегии навсегда и не сгорают при вайпе.</p>
+
+    <div class="nickbox card">
+      <div>
+        <label class="f" for="nick" data-en="1. Your nick on the server">1. Твой ник на сервере</label>
+        <input class="in" id="nick" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Steve" data-en-ph="Steve">
+        <label class="check"><input type="checkbox" id="bedrock"> <span data-en="I play on Bedrock (phone/tablet)">Я играю с Bedrock (телефон/планшет)</span></label>
+      </div>
+      <div class="note" id="nick-note" style="margin:0" data-en="2. Pick an item below">2. Выбери товар ниже</div>
+    </div>
+
+    <div class="cat"><h3 data-en="👑 Ranks">👑 Привилегии</h3><span data-en="forever · an upgrade costs only the difference">навсегда · улучшение — только разница в цене</span></div>
+    <div class="grid" id="g-ranks"></div>
+    <div class="detail card" id="d-ranks"></div>
+
+    <div class="cat"><h3 data-en="🗝 Case keys">🗝 Ключи кейсов</h3><span data-en="open the case at spawn">кейс открывается на спавне</span></div>
+    <div class="grid" id="g-cases"></div>
+    <div class="detail card" id="d-cases"></div>
+
+    <div class="cat"><h3 data-en="🎟 Battle pass">🎟 Боевой пропуск</h3><span data-en="for the current season">на текущий сезон</span></div>
+    <div class="grid" id="g-pass"></div>
+    <div class="detail card" id="d-pass"></div>
+
+    <div class="cat"><h3 data-en="💰 In-game money">💰 Игровые деньги</h3><span data-en="arrive on your balance">приходят на баланс</span></div>
+    <div class="grid" id="g-money"></div>
+    <div class="detail card" id="d-money"></div>
+
+    <p class="note" style="margin-top:26px" data-en="Payments by card / PayPal go through Tebex in euros; rubles — through our payment partner. Donations are not refundable. Questions — in «Support».">Оплата картой / PayPal идёт через Tebex в евро, рублями — через наш платёжный сервис. Донат не возвращается. Вопросы — в «Поддержке».</p>
+  </div>
+</section>
+
+<!-- ================= ПРАВИЛА ================= -->
+<section class="view" id="v-rules">
+  <div class="wrap">
+    <span class="eyebrow" data-en="Rules">Правила</span>
+    <h2 data-en="The short version">Коротко о главном</h2>
+    <p class="sub" data-en="It's anarchy, but some things get you banned. The full rules are in our Discord.">В игре анархия, но есть то, за что банят. Полные правила — в Discord.</p>
+    <div class="rules">
+      <div class="rule card ok"><h3 data-en="✅ Allowed">✅ Можно</h3><ul>
+        <li data-en="Griefing, PvP, raids, traps">Гриф, PvP, рейды, ловушки</li>
+        <li data-en="Scamming in trades">Обманывать в торговле</li>
+        <li data-en="Minimaps without a player radar, shaders, performance and UI mods, resource packs">Мини-карты без радара игроков, шейдеры, моды на оптимизацию и интерфейс, ресурспаки</li>
+      </ul></div>
+      <div class="rule card no"><h3 data-en="⛔ Not allowed (ban)">⛔ Нельзя (бан)</h3><ol>
+        <li data-en="Cheats: x-ray, killaura, fly, autoclicker, macros, freecam, bots">Читы: икс-рей, киллаура, флай, автокликер, макросы, фрикам, боты</li>
+        <li data-en="Dupes and exploits. Found one? Tell the staff">Дюпы и баги. Нашёл — напиши администрации</li>
+        <li data-en="Alt accounts to evade a ban">Твинки для обхода бана</li>
+        <li data-en="Selling accounts, items or ranks for real money">Продажа аккаунтов, вещей и привилегий за реальные деньги</li>
+        <li data-en="Pretending to be staff">Выдавать себя за администрацию</li>
+        <li data-en="Advertising other servers">Реклама других серверов</li>
+        <li data-en="Real-life threats, doxxing, NSFW, discrimination">Угрозы в жизни, слив личных данных, 18+, дискриминация</li>
+      </ol></div>
+      <div class="rule card"><h3 data-en="💬 Chat and Discord">💬 Чат и Discord</h3><ul>
+        <li data-en="Spam, flood and caps — mute">Спам, флуд и капс — мут</li>
+        <li data-en="Insulting relatives and harassment — mute or ban">Оскорбления близких и травля — мут или бан</li>
+        <li data-en="No advertising, including in DMs">Без рекламы, в том числе в ЛС</li>
+        <li data-en="Logging out in combat — death, your items drop">Выход из игры в бою — смерть, вещи выпадают</li>
+        <li data-en="Donations are not refundable, staff decisions are final">Донат не возвращается, решение администрации окончательное</li>
+      </ul></div>
+    </div>
+    <h2 style="margin-top:44px" data-en="Questions">Частые вопросы</h2>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+
+<!-- ================= ПОДДЕРЖКА ================= -->
+<section class="view" id="v-help">
+  <div class="wrap">
+    <span class="eyebrow" data-en="Support">Поддержка</span>
+    <h2 data-en="Write to us">Напиши нам</h2>
+    <p class="sub" data-en="A purchase didn't arrive, you found a bug, want to complain or suggest something — attach screenshots or a video, the staff will answer by email.">Не пришла покупка, нашёл баг, хочешь пожаловаться или что-то предложить — приложи скриншоты или видео, администрация ответит на почту.</p>
+    <div class="support">
+      <form class="form card" id="sup-form" novalidate>
+        <div class="row2">
+          <div><label class="f" for="s-nick" data-en="Nick on the server">Ник на сервере</label><input class="in" id="s-nick" maxlength="20" required autocomplete="off"></div>
+          <div><label class="f" for="s-mail" data-en="Your email for the answer">Почта для ответа</label><input class="in" id="s-mail" type="email" maxlength="80" required placeholder="name@mail.com"></div>
+        </div>
+        <div><label class="f" for="s-topic" data-en="Topic">Тема</label>
+          <select class="in" id="s-topic">
+            <option value="purchase" data-en="A purchase didn't arrive">Не пришла покупка</option>
+            <option value="bug" data-en="Bug / dupe">Баг / дюп</option>
+            <option value="report" data-en="Report a player / cheater">Жалоба на игрока / читера</option>
+            <option value="staff" data-en="Complaint about staff">Жалоба на администрацию</option>
+            <option value="account" data-en="Account / password">Аккаунт / пароль</option>
+            <option value="idea" data-en="Idea / suggestion">Идея / предложение</option>
+            <option value="other" data-en="Other">Другое</option>
+          </select></div>
+        <div><label class="f" for="s-text" data-en="Message">Сообщение</label><textarea class="in" id="s-text" maxlength="3000" required data-en-ph="Describe what happened: when, where, who. For a purchase — the date and what you bought." placeholder="Опиши, что случилось: когда, где, кто. Если про покупку — дату и что покупал."></textarea></div>
+        <div><label class="f" data-en="Screenshots and videos">Скриншоты и видео</label>
+          <label class="drop" id="s-drop" for="s-files">
+            <input type="file" id="s-files" accept="image/*,video/*" multiple>
+            <span class="drop-ic">📎</span>
+            <span><b data-en="Attach files">Прикрепить файлы</b><br><small data-en="Photos and videos · up to 6 files · 24 MB total">Фото и видео · до 6 файлов · всего до 24 МБ</small></span>
+          </label>
+          <div class="files" id="s-list"></div>
+        </div>
+        <div><label class="f" for="s-link" data-en="Long video? Paste a link (YouTube, Google Drive…)">Видео длинное? Вставь ссылку (YouTube, Google Диск…)</label><input class="in" id="s-link" type="url" maxlength="300" placeholder="https://"></div>
+        <input class="hp" id="s-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="prog" id="s-prog" hidden><i></i><span>0%</span></div>
+        <div><button class="btn btn-gold" type="submit" id="s-send" data-en="Send">Отправить</button></div>
+        <div class="msg" id="s-msg"></div>
+      </form>
+      <div class="side card">
+        <h3 data-en="Faster in chats">Быстрее — в чатах</h3>
+        <p data-en="In Discord open a ticket in 🆘 support, the staff answer there quickly. Screenshots and videos are easier to send there too.">В Discord создай тикет в 🆘 помощи — там отвечают быстрее. Скриншоты и видео тоже удобнее прислать туда.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+          <a class="btn btn-ghost btn-sm" href="https://discord.gg/5RdwEwAwhk" target="_blank" rel="noopener">Discord</a>
+          <a class="btn btn-ghost btn-sm" href="https://t.me/Bros_MC" target="_blank" rel="noopener">Telegram</a>
+        </div>
+        <h3 data-en="Cheater report">Жалоба на читера</h3>
+        <p style="margin:0" data-en="Attach a video: without proof we can't punish anyone. Every punishment on the server comes with proof.">Приложи видео: без доказательств наказать нельзя. Любое наказание на сервере — только с доказательствами.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--text)">Bros<span style="color:var(--gold)">MC</span></b> · play.bros-mc.com<br><span data-en="Not an official Minecraft product. Not affiliated with Mojang or Microsoft.">Не является официальным продуктом Minecraft. Не связан с Mojang или Microsoft.</span></div>
+    <div class="links">
+      <a class="btn btn-ghost btn-sm" href="#help" data-go="help" data-en="Support">Поддержка</a>
+      <a class="btn btn-ghost btn-sm" href="https://discord.gg/5RdwEwAwhk" target="_blank" rel="noopener">Discord</a>
+      <a class="btn btn-ghost btn-sm" href="https://t.me/Bros_MC" target="_blank" rel="noopener">Telegram</a>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== НАСТРОЙКИ =====================
+   tebex.token    — Public Token Tebex (он публичный). Private Key сюда НИКОГДА не вставляй.
+   tebex.storeUrl — адрес магазина Tebex, например https://bros-mc.tebex.io
+   tebex.packages — ID товаров Tebex. Пусто = «оплата подключается».
+   supportApi     — куда шлёт форма поддержки (Cloudflare Worker bros-support → письмо с файлами на brosmc.support@gmail.com).
+   shopHost       — адрес магазина; кнопка «Донат» на главном сайте ведёт туда.                    */
+const CONFIG = {
+  tebex: { token: "158s4-ae9c214b3696dafc4f12193061aa153e95f8d824", storeUrl: "", packages: {} },
+  supportApi: "/api/support",   // обработчик формы (Cloudflare Worker bros-support): письмо с файлами на brosmc.support@gmail.com
+  shopHost: "shop.bros-mc.com",
+  serverAddress: "play.bros-mc.com"
+};
+
+/* ---------- товары ---------- */
+const RANKS = [
+  { id:"vip", name:"VIP", price:100, eur:1.49, color:"#ffb300",
+    ru:["Префикс <b>VIP</b> в чате, TAB и над головой","Строка «+ VIP ник» при входе на сервер","+25% к деньгам за убийство","+10% к наградам за квесты гильдии","Аирдропы открываешь на минуту раньше всех","<code>/heal</code> <code>/feed</code> — лечение и еда","<code>/workbench</code> <code>/ec</code> — верстак и эндер-сундук в кармане","<code>/back</code> <code>/top</code> <code>/hat</code>","<code>/kit vip</code> — железный сет и ресурсы","<code>/daily</code> — $1 000 каждый день","Следы из частиц: Сердечки, Ноты, Изумрудные искры","−10% на прокачку <code>/skills</code>","До 5 домов и 3 приватов","Стартовые $1 000 каждый вайп"],
+    en:["<b>VIP</b> prefix in chat, TAB and above your head","«+ VIP nick» line when you join","+25% kill money","+10% guild quest rewards","Open airdrops a minute before everyone","<code>/heal</code> <code>/feed</code>","<code>/workbench</code> <code>/ec</code> — crafting table and ender chest anywhere","<code>/back</code> <code>/top</code> <code>/hat</code>","<code>/kit vip</code> — iron set and resources","<code>/daily</code> — $1,000 every day","Particle trails: Hearts, Notes, Emerald sparks","−10% on <code>/skills</code>","Up to 5 homes and 3 claims","$1,000 at the start of every wipe"] },
+  { id:"premium", name:"Premium", price:200, eur:2.49, color:"#b23cff", hot:true,
+    ru:["Всё из VIP","Префикс <b>Премиум</b>","+50% к деньгам за убийство","+20% к наградам за квесты гильдии","<code>/anvil</code> — наковальня в кармане","<code>/repair</code> — починка вещи в руке (раз в 24 ч)","<code>/ptime</code> — своё время суток, <code>/recipe</code> — рецепты","<code>/kit premium</code> — алмазные инструменты, броня и Железный приват","<code>/daily</code> — $2 000 каждый день","Следы: Огонь, Огонь душ, Руны","−20% на <code>/skills</code>","До 7 домов и 5 приватов","Стартовые $2 500 каждый вайп"],
+    en:["Everything from VIP","<b>Premium</b> prefix","+50% kill money","+20% guild quest rewards","<code>/anvil</code> anywhere","<code>/repair</code> — fix the item in hand (once per 24 h)","<code>/ptime</code> — your own time of day, <code>/recipe</code>","<code>/kit premium</code> — diamond tools, armor and an Iron claim","<code>/daily</code> — $2,000 every day","Trails: Fire, Soul fire, Runes","−20% on <code>/skills</code>","Up to 7 homes and 5 claims","$2,500 at the start of every wipe"] },
+  { id:"creative", name:"Creative", price:500, eur:5.49, color:"#00e676",
+    ru:["Всё из Premium","Префикс <b>Креатив</b>","<code>/gmc</code> — креатив (без полёта: летать можно только с Флаем)","<code>/kit creative</code> — алмазный сет, Алмазный приват, 2 рейд-ТНТ","<code>/daily</code> — $3 500 и ключ денежного кейса","Телепорт к месту смерти — <code>/back</code> после смерти","5% шанс сохранить вещи при смерти (раз в 24 ч)","Все следы в <code>/trail</code>: Звёздная пыль, Сакура, Тотем","−30% на <code>/skills</code>","До 7 приватов","Стартовые $4 000 каждый вайп"],
+    en:["Everything from Premium","<b>Creative</b> prefix","<code>/gmc</code> — creative mode (no flying: only Fly lets you fly)","<code>/kit creative</code> — diamond set, Diamond claim, 2 raid TNT","<code>/daily</code> — $3,500 and a money case key","Teleport to your death point — <code>/back</code> after death","5% chance to keep items on death (once per 24 h)","All trails: Stardust, Sakura, Totem","−30% on <code>/skills</code>","Up to 7 claims","$4,000 at the start of every wipe"] },
+  { id:"baron", name:"Барон", nameEn:"Baron", price:750, eur:7.99, color:"#ff9d2e", isNew:true,
+    ru:["Всё из Creative","Префикс <b>Барон</b>","<code>/kit baron</code> — незеритовые инструменты и Алмазный приват","<code>/daily</code> — $5 000 и ключ денежного кейса","10% шанс сохранить вещи при смерти","+75% к деньгам за убийство","+30% к наградам за квесты гильдии","<code>/pweather</code> — своя погода","<code>/sit</code> — сесть где угодно","−35% на <code>/skills</code>","До 10 домов и 9 приватов","Стартовые $6 000 каждый вайп"],
+    en:["Everything from Creative","<b>Baron</b> prefix","<code>/kit baron</code> — netherite tools and a Diamond claim","<code>/daily</code> — $5,000 and a money case key","10% chance to keep items on death","+75% kill money","+30% guild quest rewards","<code>/pweather</code> — your own weather","<code>/sit</code> — sit anywhere","−35% on <code>/skills</code>","Up to 10 homes and 9 claims","$6,000 at the start of every wipe"] },
+  { id:"duke", name:"Герцог", nameEn:"Duke", price:1000, eur:10.99, color:"#ff4d4d", isNew:true,
+    ru:["Всё из Барона","Префикс <b>Герцог</b>","<code>/kit duke</code> — незеритовый сет и Незеритовый приват","<code>/daily</code> — $7 000 и 2 ключа денежного кейса","15% шанс сохранить вещи при смерти","+100% к деньгам за убийство","+40% к наградам за квесты гильдии","Цвет ника на выбор — <code>/nickcolor</code>","<code>/emote</code> — эмоции частицами: сердечки, ноты, огонь, звёзды…","−40% на <code>/skills</code>","До 12 домов и 11 приватов","Стартовые $8 000 каждый вайп"],
+    en:["Everything from Baron","<b>Duke</b> prefix","<code>/kit duke</code> — netherite set and a Netherite claim","<code>/daily</code> — $7,000 and 2 money case keys","15% chance to keep items on death","+100% kill money","+40% guild quest rewards","Free nick colour — <code>/nickcolor</code>","<code>/emote</code> — particle emotes: hearts, notes, fire, stars…","−40% on <code>/skills</code>","Up to 12 homes and 11 claims","$8,000 at the start of every wipe"] },
+  { id:"emperor", name:"Император", nameEn:"Emperor", price:1500, eur:15.99, color:"#ffd34d", isNew:true,
+    ru:["Всё из Герцога — самая высокая привилегия","<b>Переливающийся префикс Императора</b>","Особое сообщение всему серверу при входе","<code>/decree</code> — Императорский указ всему серверу (раз в час)","<code>/kit emperor</code> — незеритовый сет с чарами и ключ замка (раз в 3 дня)","<code>/daily</code> — $10 000 и ключ Бюджетного кейса","20% шанс сохранить вещи при смерти","+150% к деньгам за убийство","+50% к наградам за квесты гильдии","−50% на <code>/skills</code>","До 15 домов и 15 приватов","Стартовые $10 000 каждый вайп"],
+    en:["Everything from Duke — the top rank","<b>Animated Emperor prefix</b>","A special server-wide message when you join","<code>/decree</code> — an Imperial decree to the whole server (hourly)","<code>/kit emperor</code> — enchanted netherite set and a castle key (every 3 days)","<code>/daily</code> — $10,000 and a Budget case key","20% chance to keep items on death","+150% kill money","+50% guild quest rewards","−50% on <code>/skills</code>","Up to 15 homes and 15 claims","$10,000 at the start of every wipe"] }
+];
+const CASES = [
+  { id:"key_budget", name:"Бюджетный кейс", nameEn:"Budget case", price:60, eur:0.99, color:"#4fc77a",
+    odds:[["Игрок · $500","Player · $500",50,"#9aa1b2"],["VIP",null,35,"#ffb300"],["Premium",null,15,"#b23cff"]],
+    ru:"Ключи этого кейса ещё падают в аирдропах и в боевом пропуске.", en:"Keys for this case also drop in airdrops and the battle pass." },
+  { id:"key_classic", name:"Классический кейс", nameEn:"Classic case", price:150, eur:1.99, color:"#b23cff", hot:true,
+    odds:[["VIP",null,45,"#ffb300"],["Premium",null,35,"#b23cff"],["Creative",null,20,"#00e676"]],
+    ru:"Главный донат-кейс. Последняя награда премиум-пропуска — его ключ.", en:"The main donate case. The last premium pass reward is its key." },
+  { id:"key_royal", name:"Королевский кейс", nameEn:"Royal case", price:350, eur:3.99, color:"#ffd34d", isNew:true,
+    odds:[["VIP",null,40,"#ffb300"],["Premium",null,29,"#b23cff"],["Creative",null,14.3,"#00e676"],["Барон","Baron",8,"#ff9d2e"],["Герцог","Duke",4.5,"#ff4d4d"],["Император","Emperor",4.2,"#ffd34d"]],
+    ru:"Только привилегии, вплоть до Императора. Выпала выше твоей — заменит её; такая же или ниже — ничего не меняется.", en:"Ranks only, up to Emperor. Higher than yours — replaces it; same or lower — nothing changes." }
+];
+const PASS = [{ id:"pass_premium", name:"Премиум-пропуск", nameEn:"Premium pass", price:200, eur:2.49, color:"#ffb828",
+  ru:["Вторая линия наград на всех 30 уровнях","На 1 уровне — ключ Бюджетного кейса","На 30 уровне — ключ Классического кейса","Опыт пропуска дают квесты гильдии (<code>/guild</code>)","Бесплатная линия остаётся у всех"],
+  en:["Second reward track on all 30 levels","Level 1 — a Budget case key","Level 30 — a Classic case key","Pass XP comes from guild quests (<code>/guild</code>)","The free track stays for everyone"] }];
+const MONEY = [
+  { id:"money_10k", amount:10000, price:60, eur:0.99 }, { id:"money_25k", amount:25000, price:140, eur:1.99 },
+  { id:"money_50k", amount:50000, price:270, eur:3.49 }, { id:"money_100k", amount:100000, price:500, eur:5.99, hot:true },
+  { id:"money_250k", amount:250000, price:1150, eur:12.99 }
+];
+/* ---------- Что есть на сервере: плитки и страницы-гайды ---------- */
+const FEATURES = [
+  {id:"bosses",ic:"🏰",ru:"Замки и боссы",en:"Castles and bosses",dru:"Где искать замки, как собрать ключ, как победить Ифрита, Громовержца и Пожирателя Бездны.",den:"Where castles are, how to craft the key, how to beat the three bosses."},
+  {id:"crafts",ic:"🛠",ru:"Крафты",en:"Crafts",dru:"Ключ замка, части ключа, обмен частей и упрощённые крафты — с картинками верстака.",den:"Castle key, key parts, part exchange and simplified crafts — with crafting grids."},
+  {id:"gear",ic:"🛡",ru:"Своё оружие и броня",en:"Custom gear",dru:"Меч Зевса, Незерская коса, броня Зевса, Инферно и Бездны, Клинок Бездны, Бур, Лесоруб.",den:"Zeus sword, Nether scythe, Zeus, Inferno and Void armor, Void Blade, Drill, Lumber axe."},
+  {id:"duels",ic:"⚔",ru:"Дуэли и бот",en:"Duels and the bot",dru:"Дуэли на ставку, свои наборы, раскладка китов и тренировка с ботом на нейросети.",den:"Bet duels, custom kits, kit layouts and training with a neural-network bot."},
+  {id:"guild",ic:"📜",ru:"Гильдия и магазин гильдии",en:"Guild and guild shop",dru:"Квесты каждый день и неделю, ранги, очки гильдии и что на них купить.",den:"Daily and weekly quests, ranks, guild points and what to buy with them."},
+  {id:"money",ic:"💰",ru:"Деньги и скупщики",en:"Money and buyers",dru:"Автошахта, скупщик шахты, скупщик на спавне, магазин, Чёрный рынок, деньги за убийства.",den:"Auto-mine, mine buyer, spawn dealer, shop, Black Market, kill money."},
+  {id:"events",ic:"☄",ru:"Ивенты",en:"Events",dru:"Аирдропы, метеориты, Судная ночь, Чёрный рынок и апокалипсис перед вайпом.",den:"Airdrops, meteors, the Purge, the Black Market and the pre-wipe apocalypse."},
+  {id:"clans",ic:"👥",ru:"Кланы и приваты",en:"Clans and claims",dru:"Кланы с сезонами, приваты с ядром, рейды, ловушки и жители.",den:"Clans with seasons, claims with a core, raids, traps and villagers."},
+  {id:"pass",ic:"🎟",ru:"Боевой пропуск",en:"Battle pass",dru:"30 уровней наград: бесплатная и премиум-линия, опыт — за квесты гильдии.",den:"30 reward levels: free and premium track, XP from guild quests."}
+];
+
+const IMG = n => `img/${n}.png`;
+const MCN = {diamond:["Алмаз","Diamond"],purpur_block:["Пурпурный блок","Purpur Block"],popped_chorus_fruit:["Жареный плод хоруса","Popped Chorus Fruit"],
+  magma_block:["Блок магмы","Magma Block"],blaze_rod:["Огненный стержень","Blaze Rod"],copper_block:["Медный блок","Block of Copper"],lightning_rod:["Громоотвод","Lightning Rod"],
+  ender_pearl:["Эндер-жемчуг","Ender Pearl"],ender_eye:["Око Эндера","Eye of Ender"],shulker_shell:["Панцирь шалкера","Shulker Shell"],fire_charge:["Огненный заряд","Fire Charge"],
+  magma_cream:["Сгусток магмы","Magma Cream"],ghast_tear:["Слеза гаста","Ghast Tear"],amethyst_shard:["Осколок аметиста","Amethyst Shard"],prismarine_crystals:["Кристаллы призмарина","Prismarine Crystals"],
+  glow_ink_sac:["Светящийся мешок чернил","Glow Ink Sac"],gold_block:["Золотой блок","Block of Gold"],apple:["Яблоко","Apple"],golden_apple:["Золотое яблоко","Golden Apple"],
+  string:["Нить","String"],cobweb:["Паутина","Cobweb"],white_wool:["Шерсть (любая)","Wool (any)"],rotten_flesh:["Гнилая плоть","Rotten Flesh"],leather:["Кожа","Leather"]};
+const TH = {void:["Бездны","Void","#a35cff"],flame:["Пламени","Flame","#ff7a1a"],thunder:["Молнии","Thunder","#ffd84a"]};
+const PART = [["кольцо","ring"],["стержень","shaft"],["бородка","bit"]];
+const MARKS = {void:["ender_pearl","ender_eye","shulker_shell"],flame:["fire_charge","magma_cream","ghast_tear"],thunder:["amethyst_shard","prismarine_crystals","glow_ink_sac"]};
+const CSIDE = {void:["purpur_block","popped_chorus_fruit"],flame:["magma_block","blaze_rod"],thunder:["copper_block","lightning_rod"]};
+function nmItem(id){ if(MCN[id]) return T(MCN[id][0],MCN[id][1]);
+  const m=id.match(/^(shard|key)_(\w+?)(?:_(\d))?$/); if(m){const t=TH[m[2]]; return m[1]==="key"?T("Ключ замка "+t[0],t[1]+" castle key"):T("Часть ключа "+t[0]+" ("+PART[m[3]-1][0]+")",t[1]+" key part ("+PART[m[3]-1][1]+")");}
+  return id; }
+function slot(id,n){ if(!id) return `<div class="sl"></div>`;
+  const src=MCN[id]?IMG("mc_"+id):IMG(id);
+  return `<div class="sl" title="${esc(nmItem(id))}"><img src="${src}" alt="${esc(nmItem(id))}" loading="lazy">${n>1?`<span class="n">${n}</span>`:""}</div>`; }
+function craft(cells,out,n,title){
+  return `<div class="craft"><div><div class="ttl">${title||T("Верстак","Crafting")}</div><div class="gr">${cells.map(c=>slot(c)).join("")}</div></div><div class="ar"></div><div class="sl out">${slot(out,n).replace(/^<div class="sl"[^>]*>|<\/div>$/g,"")}</div></div>`;
+}
+function furnace(inp,out){
+  return `<div class="craft"><div><div class="ttl">${T("Печь","Furnace")}</div><div class="fur">${slot(inp)}<div></div><div></div><div class="fire">🔥</div><div class="ar" style="grid-column:2;grid-row:2"></div><div class="sl out" style="grid-column:3;grid-row:2">${slot(out).replace(/^<div class="sl"[^>]*>|<\/div>$/g,"")}</div><div class="sl" style="grid-column:1;grid-row:3"></div></div></div></div>`;
+}
+const N=null;
+
+const GUIDES = {
+bosses: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Замки и боссы","Castles and bosses")}</h2>
+<p class="sub">${T("В каждом из трёх миров есть свой замок с алтарём. Вставь ключ в алтарь — появится босс. Победи его вместе с друзьями и забери лут.","Each of the three worlds has its own castle with an altar. Put a key into the altar — the boss appears. Beat it with friends and take the loot.")}</p>
+<div class="cols">
+ <div class="box card"><h4><img class="ico" src="${IMG("key_thunder")}" alt="">⚡ ${T("Громовержец","Thunderlord")}</h4><p><b>${T("Где:","Where:")}</b> ${T("обычный мир, Храм молнии","overworld, Temple of Lightning")}</p><p><b>${T("Сложность:","Difficulty:")}</b> ${T("самый лёгкий","the easiest")} · 560 HP</p><p>${T("Бьёт молниями и вешает «Шок». В храме загадка: зажги рычагами все 4 лампы — решётка алтаря поднимется.","Strikes with lightning and applies «Shock». The temple has a puzzle: light all 4 lamps with levers — the altar gate opens.")}</p><p><b>${T("Главный приз:","Main prize:")}</b> ${T("часть брони Зевса","a Zeus armor piece")}</p></div>
+ <div class="box card"><h4><img class="ico" src="${IMG("key_flame")}" alt="">🔥 ${T("Ифрит","Ifrit")}</h4><p><b>${T("Где:","Where:")}</b> ${T("Незер, Адская кузница","Nether, Hell Forge")}</p><p><b>${T("Сложность:","Difficulty:")}</b> ${T("средний, но сильный","medium but strong")} · 850 HP</p><p>${T("Сильно поджигает, со 2-й стадии — «Синее пламя», которое жжёт сквозь огнестойкость. В ярости достаёт адскую косу.","Sets you on fire; from phase 2 — «Blue Flame» that burns through fire resistance. When enraged, pulls out a hell scythe.")}</p><p><b>${T("Главный приз:","Main prize:")}</b> ${T("часть брони Инферно","an Inferno armor piece")}</p></div>
+ <div class="box card"><h4><img class="ico" src="${IMG("key_void")}" alt="">🌌 ${T("Пожиратель Бездны","Void Devourer")}</h4><p><b>${T("Где:","Where:")}</b> ${T("Энд, Лабиринт Бездны","the End, Void Labyrinth")}</p><p><b>${T("Сложность:","Difficulty:")}</b> ${T("самый сильный, тяжёлая броня","the hardest, heavy armor")} · 1500 HP</p><p>${T("Тянет к себе, «Руки Бездны» из-под земли, «Луч Бездны», чёрная дыра. Двойной лут.","Pulls you in, «Void Hands» from the ground, «Void Beam», a black hole. Double loot.")}</p><p><b>${T("Главный приз:","Main prize:")}</b> ${T("броня Бездны или Клинок Бездны (только отсюда)","Void armor or the Void Blade (only here)")}</p></div>
+</div>
+<h3>${T("Как дойти до босса","How to get to the boss")}</h3>
+<ol>
+<li>${T("Ищи <b>тайники</b> — руины, подвалы и закопанные сундуки по всему миру (дальше 300 блоков от центра). В них лут и <b>части ключа</b>. Тайник снова наполняется через 6 часов.","Look for <b>caches</b> — ruins, cellars and buried chests all over the world (300+ blocks from the center). They hold loot and <b>key parts</b>. A cache refills after 6 hours.")}</li>
+<li>${T("Ключ = 3 разные части одного мира: <b>кольцо, стержень и бородка</b>. Части ещё дают боссы, Чёрный рынок и магазин гильдии, а недостающую можно скрафтить (см. «Крафты»).","A key = 3 different parts of one world: <b>ring, shaft and bit</b>. Parts also drop from bosses and are sold by the Black Market and the guild shop; a missing one can be crafted (see «Crafts»).")}</li>
+<li>${T("Собери ключ на верстаке и найди <b>замок</b> своего мира. Замки стоят далеко друг от друга (от 800 блоков).","Craft the key and find a <b>castle</b> of that world. Castles are far apart (800+ blocks).")}</li>
+<li>${T("ПКМ ключом по алтарю — босс появится. Если с ним не драться 15 минут, он уйдёт. После победы алтарь отдыхает 30 минут.","Right-click the altar with the key — the boss spawns. If nobody fights it for 15 minutes, it leaves. After a win the altar rests for 30 minutes.")}</li>
+</ol>
+<h3>${T("Награды","Rewards")}</h3>
+<ul><li>${T("<b>Деньги за урон</b> — каждому, кто бил: 40$ за единицу урона (до 60 000$).","<b>Money for damage</b> — to everyone who hit it: $40 per damage point (up to $60,000).")}</li>
+<li>${T("Лут: части ключа, талисманы, ядро привата, незерит, зачарованные золотые яблоки, алмазы.","Loot: key parts, talismans, a claim core, netherite, enchanted golden apples, diamonds.")}</li>
+<li>${T("<b>Главный приз</b> — 35% (у Пожирателя 55%): часть брони I–III уровня, у Пожирателя — до IV.","<b>Main prize</b> — 35% (55% for the Devourer): an armor piece of level I–III, up to IV from the Devourer.")}</li></ul>
+<p class="note">${T("Замок нельзя сломать, взорвать, застроить или залить. Боссом управляет нейросеть — он выбирает атаки сам.","Castles can't be broken, blown up, built over or flooded. A neural network picks the boss's attacks.")}</p></div>`,
+
+crafts: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Крафты","Crafts")}</h2>
+<p class="sub">${T("Все свои рецепты сервера. Наведи на предмет — увидишь название.","All the server's own recipes. Hover an item to see its name.")}</p>
+<h3>${T("Ключ замка","Castle key")}</h3>
+<p>${T("3 разные части одного мира — кольцо, стержень и бородка — в любых клетках верстака.","3 different parts of one world — ring, shaft and bit — in any slots of the crafting table.")}</p>
+${["void","flame","thunder"].map(t=>craft([N,N,N,`shard_${t}_1`,`shard_${t}_2`,`shard_${t}_3`,N,N,N],`key_${t}`,1,T("Ключ "+TH[t][0],TH[t][1]+" key"))).join("")}
+<h3>${T("Часть ключа из ресурсов","A key part from resources")}</h3>
+<p>${T("По углам — блоки мира, сверху и снизу — алмазы, по бокам — особый предмет мира, а <b>в центре — «метка»</b>: она решает, какая часть получится.","Corners — the world's blocks, top and bottom — diamonds, sides — the world's special item, and <b>the center is the «mark»</b>: it decides which part you get.")}</p>
+${["void","flame","thunder"].map(t=>{const [c,sd]=CSIDE[t];return craft([c,"diamond",c,sd,MARKS[t][0],sd,c,"diamond",c],`shard_${t}_1`,1,T("Часть "+TH[t][0],TH[t][1]+" part"));}).join("")}
+<div class="cols" style="margin-top:10px">${["void","flame","thunder"].map(t=>`<div class="box card"><h4 style="color:${TH[t][2]}">${T("Метки "+TH[t][0],TH[t][1]+" marks")}</h4>${MARKS[t].map((m,i)=>`<div class="mark"><img src="${IMG("mc_"+m)}" alt="">${esc(nmItem(m))} → <img src="${IMG(`shard_${t}_${i+1}`)}" alt=""><b>${T(PART[i][0],PART[i][1])}</b></div>`).join("")}</div>`).join("")}</div>
+<h3>${T("Обмен частей","Part exchange")}</h3>
+<p>${T("2 лишние части ключа (любые) + метка нужной части = нужная часть. Можно класть в любые клетки.","2 spare key parts (any) + the mark of the part you need = that part. Any slots.")}</p>
+${craft(["shard_flame_1","shard_thunder_2",N,"shulker_shell",N,N,N,N,N],"shard_void_3",1,T("Обмен","Exchange"))}
+<h3>${T("Упрощённые крафты","Simplified crafts")}</h3>
+${craft(["gold_block","apple",N,N,N,N,N,N,N],"golden_apple",1)}
+${craft(["string",N,"string",N,"string",N,"string",N,"string"],"cobweb",1)}
+${craft(["white_wool",N,N,N,N,N,N,N,N],"string",4)}
+${furnace("rotten_flesh","leather")}
+<p class="note">${T("Крафтер (автоверстак) свои рецепты сервера не делает — только обычный верстак.","The Crafter block can't make the server's own recipes — only a crafting table.")}</p></div>`,
+
+gear: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Своё оружие и броня","Custom gear")}</h2>
+<p class="sub">${T("Эксклюзивные вещи из магазина, боссов и боевого пропуска. У каждой есть уровни I–IV — улучшение через <code>/upgrade</code>.","Exclusive items from the shop, bosses and the battle pass. Each has levels I–IV — upgrade with <code>/upgrade</code>.")}</p>
+<div class="cols">
+<div class="box card"><h4><img class="ico" src="${IMG("zeus")}" alt="">${T("Меч Зевса","Zeus sword")}</h4><p>${T("Бьёт молнией по цели. Броня Зевса IV (полный сет) иногда даёт «Громовой удар»: молния, +урон и замедление.","Strikes the target with lightning. Full Zeus armor IV sometimes triggers «Thunder Strike»: lightning, +damage and slowness.")}</p></div>
+<div class="box card"><h4><img class="ico" src="${IMG("scythe")}" alt="">${T("Незерская коса","Nether scythe")}</h4><p>${T("Каждый удар поджигает, даже сквозь огнестойкость. Полный удар задевает всех рядом, убийство лечит. ПКМ — «Адская волна». На IV — «Синее пламя».","Every hit sets on fire, even through fire resistance. A full swing hits everyone nearby, kills heal you. Right-click — «Hellwave». At IV — «Blue Flame».")}</p></div>
+<div class="box card"><h4><img class="ico" src="${IMG("fire_chestplate_3")}" alt="">${T("Броня Инферно","Inferno armor")}</h4><p>${T("Полный сет IV: когда HP меньше 30% — «Огненная вспышка» откидывает и поджигает всех рядом.","Full set IV: below 30% HP — «Fire Burst» knocks back and ignites everyone nearby.")}</p></div>
+<div class="box card"><h4><img class="ico" src="${IMG("void_chestplate_4")}" alt="">${T("Броня Бездны","Void armor")}</h4><p>${T("Только с Пожирателя Бездны. Иногда «Уклонение» — удар проходит сквозь тебя. IV — «Разлом» при HP меньше 35%. На Bedrock — рывок двойным приседанием.","Only from the Void Devourer. Sometimes «Dodge» — a hit passes through you. IV — «Rift» below 35% HP. On Bedrock — a dash on double sneak.")}</p></div>
+<div class="box card"><h4><img class="ico" src="${IMG("void_blade")}" alt="">${T("Клинок Бездны","Void Blade")}</h4><p>${T("Создаёт чёрную дыру, которая затягивает врагов. Сквозь стены не бьёт.","Creates a black hole that pulls enemies in. Doesn't hit through walls.")}</p></div>
+<div class="box card"><h4><img class="ico" src="${IMG("drill")}" alt=""><img class="ico" src="${IMG("lumber")}" alt="">${T("Бур и Лесоруб","Drill and Lumber axe")}</h4><p>${T("Бур копает областью, Лесоруб рубит дерево целиком (Shift — одно бревно). Заряжаются от добычи.","The Drill mines an area, the Lumber axe fells the whole tree (Shift — one log). They charge as you work.")}</p></div>
+</div>
+<p class="note">${T("Наши вещи прочнее незерита примерно в 2,5 раза и не чинятся через /repair.","Our items are about 2.5× more durable than netherite and can't be fixed with /repair.")}</p></div>`,
+
+duels: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Дуэли и бот","Duels and the bot")}</h2>
+<ul><li>${T("<code>/duel</code> — меню дуэлей: вызови игрока, выбери набор и ставку. Победитель забирает обе ставки, вещи после дуэли возвращаются.","<code>/duel</code> — the duels menu: challenge a player, pick a kit and a bet. The winner takes both bets, your items come back after the duel.")}</li>
+<li>${T("Наборы: меч, топор, булава, копьё, кристаллы, зелья, UHC, SMP, «Свои вещи» и <b>свой набор</b> — собери любой кит сам.","Kits: sword, axe, mace, spear, crystals, potions, UHC, SMP, «Own items» and <b>your own kit</b> — build any kit yourself.")}</li>
+<li>${T("<b>Раскладка китов</b> — расставь вещи как удобно, так они и будут выдаваться.","<b>Kit layout</b> — arrange items your way, that's how you'll get them.")}</li>
+<li>${T("<b>Тренировка с ботом</b> — 4 уровня сложности. Бот на нейросети учится на настоящих боях игроков: ставит щит, сбивает его топором, кидает кристаллы, прыгает с булавой.","<b>Training with the bot</b> — 4 difficulty levels. The neural-network bot learns from real player fights: blocks, breaks shields with an axe, uses crystals, mace jumps.")}</li>
+<li>${T("Можно смотреть чужие дуэли. В бою зайти в дуэль, тренировку или наблюдение нельзя.","You can watch other duels. You can't enter a duel, training or spectating while in combat.")}</li></ul></div>`,
+
+guild: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Гильдия","Guild")}</h2>
+<ul><li>${T("<code>/guild</code> — 3 ежедневных и 3 недельных квеста: убей мобов, добудь, сдай предметы, PvP и другие.","<code>/guild</code> — 3 daily and 3 weekly quests: kill mobs, mine, deliver items, PvP and more.")}</li>
+<li>${T("За квест: деньги, опыт гильдии, опыт боевого пропуска и <b>очки гильдии</b> (1–5 по сложности).","Per quest: money, guild XP, battle pass XP and <b>guild points</b> (1–5 by difficulty).")}</li>
+<li>${T("Ранги гильдии дают бонус к продаже в <code>/shop</code>, к деньгам за квесты и замены квестов.","Guild ranks give a /shop sell bonus, more quest money and quest rerolls.")}</li></ul>
+<h3>${T("Магазин гильдии","Guild shop")}</h3>
+<p>${T("Кнопка-изумруд в <code>/guild</code>. Обычный товар меняется каждые 30 минут, редкий — раз в день. Каждую вещь можно купить один раз за смену.","The emerald button in <code>/guild</code>. Regular stock changes every 30 minutes, rare stock once a day. Each item once per rotation.")}</p>
+<p>${T("Там бывают: ключи «Снабжение» и денежные, части ключа и ключ замка, талисманы, ловушки, пузырьки опыта, золотые яблоки, жемчуг и <b>цвет ника</b>.","You'll find: supply and money keys, key parts and castle keys, talismans, traps, XP bottles, golden apples, pearls and <b>nick colour</b>.")}</p></div>`,
+
+money: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Деньги и скупщики","Money and buyers")}</h2>
+<ul><li>${T("<b>Автошахта</b> <code>/mine</code> обновляется сама. Добытое там продавай <b>скупщику шахты</b> — цена меняется каждые 30 минут (до ×1,8). Кнопка «Продать всю руду» берёт и обычную руду.","<b>Auto-mine</b> <code>/mine</code> refills itself. Sell what you mined to the <b>mine buyer</b> — prices change every 30 minutes (up to ×1.8). «Sell all ore» also takes regular ore.")}</li>
+<li>${T("<b>Скупщик на спавне</b> — новый список каждые 30 минут (без руды), часть вещей дороже, чем в магазине.","<b>The spawn dealer</b> — a new list every 30 minutes (no ore), some items pay more than the shop.")}</li>
+<li>${T("<code>/shop</code> — продажа и покупка. Поношенные вещи тоже продаются — дешевле по износу.","<code>/shop</code> — buy and sell. Worn items sell too — cheaper by wear.")}</li>
+<li>${T("<b>Чёрный рынок</b> появляется на спавне каждые 30 минут на 10 минут в случайном месте.","<b>The Black Market</b> appears at spawn every 30 minutes for 10 minutes at a random spot.")}</li>
+<li>${T("Убийство игрока забирает 5% его баланса. Деньги можно спрятать в купюры <code>/cash</code>. За мобов тоже платят.","A kill takes 5% of the victim's balance. Hide money in banknotes with <code>/cash</code>. Mobs pay too.")}</li>
+<li>${T("Боссы платят за урон, квесты гильдии — за выполнение.","Bosses pay for damage, guild quests pay on completion.")}</li></ul></div>`,
+
+events: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Ивенты","Events")}</h2>
+<ul><li>${T("<b>Аирдропы</b> — падают в мире с лутом, за них дерутся. VIP и выше открывают на минуту раньше.","<b>Airdrops</b> — fall in the world with loot, people fight over them. VIP and up open them a minute earlier.")}</li>
+<li>${T("<b>Метеориты</b> — падают с ресурсами, кто первый добежал, тот и забрал.","<b>Meteors</b> — fall with resources, first come first served.")}</li>
+<li>${T("<b>Судная ночь</b> — вечная ночь и приваты не защищают, пока идёт ивент.","<b>The Purge</b> — endless night and claims don't protect while it runs.")}</li>
+<li>${T("<b>Чёрный рынок</b> — редкие вещи, осколки и ключи.","<b>Black Market</b> — rare items, key parts and keys.")}</li>
+<li>${T("<b>Апокалипсис перед вайпом</b> — 30 минут метеоритов на спавне: спавн можно ломать, включено PvP. После вайпа спавн снова чистый.","<b>Pre-wipe apocalypse</b> — 30 minutes of meteors at spawn: spawn can be broken, PvP is on. After the wipe spawn is clean again.")}</li></ul></div>`,
+
+clans: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Кланы и приваты","Clans and claims")}</h2>
+<ul><li>${T("<code>/clan</code> — создай клан, зови друзей, союзы, клановый чат, сезоны и топ кланов.","<code>/clan</code> — create a clan, invite friends, alliances, clan chat, seasons and a clan top.")}</li>
+<li>${T("<code>/privat</code> — приват держит <b>ядро</b>. Его можно зарейдить рейд-ТНТ; во время рейда ядро не сломать и не убрать.","<code>/privat</code> — a claim is held by a <b>core</b>. It can be raided with raid TNT; during a raid the core can't be broken or removed.")}</li>
+<li>${T("В чужом привате нельзя ломать, ставить, открывать вагонетки и лодки с сундуками, пользоваться топором, мотыгой и костной мукой.","In someone else's claim you can't break, build, open chest minecarts or boats, or use axes, hoes and bone meal.")}</li>
+<li>${T("<b>Жителей можно носить</b>: Shift+ПКМ пустой рукой — на плечи, Shift+ПКМ по блоку — поставить. Не в бою и не в чужом привате.","<b>Villagers can be carried</b>: Shift+right-click with an empty hand — onto your shoulders, Shift+right-click a block — put down. Not in combat or in others' claims.")}</li>
+<li>${T("Ловушки, гриф и рейды разрешены — это анархия.","Traps, griefing and raids are allowed — it's anarchy.")}</li></ul></div>`,
+
+pass: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("Боевой пропуск","Battle pass")}</h2>
+<ul><li>${T("<code>/pass</code> — 30 уровней. Бесплатная линия есть у всех, премиум-линия — за покупку.","<code>/pass</code> — 30 levels. Everyone has the free track, the premium track is bought.")}</li>
+<li>${T("Опыт пропуска дают <b>квесты гильдии</b>: ежедневный — 25, недельный — 100.","Pass XP comes from <b>guild quests</b>: daily — 25, weekly — 100.")}</li>
+<li>${T("Премиум: ключ Бюджетного кейса на 1 уровне, Классического — на 30-м, а между ними — ресурсы, деньги и редкие вещи.","Premium: a Budget case key at level 1, a Classic one at 30, and resources, money and rare items in between.")}</li></ul>
+<p><a class="btn btn-gold" href="https://shop.bros-mc.com/" data-go="shop">${T("Купить премиум-пропуск","Buy the premium pass")}</a></p></div>`
+};
+function renderGuide(){ const g=$("#guide"); if(!g||!GUIDE_ID||!GUIDES[GUIDE_ID]) return; g.innerHTML=GUIDES[GUIDE_ID](); }
+
+const FAQ = [
+  ["Когда придёт покупка?","When will my purchase arrive?","Обычно за 1–2 минуты после оплаты. Если ты не в игре, выдастся при следующем входе.","Usually 1–2 minutes after payment. If you're offline, you'll get it the next time you join."],
+  ["Я играю с телефона. Какой ник писать?","I play on a phone. Which nick do I enter?","Свой ник из Bedrock и отметь «Я играю с Bedrock» — сайт сам добавит приставку <code>[BK]</code>. Пробелы заменятся на <code>_</code>.","Your Bedrock nick, and tick «I play on Bedrock» — the site adds the <code>[BK]</code> prefix. Spaces become <code>_</code>."],
+  ["Какую версию Java ставить?","Which Java version do I need?","Любую от <code>1.21.11</code> до <code>26.3</code>. Старее 1.21.11 не подойдут.","Any from <code>1.21.11</code> to <code>26.3</code>. Older than 1.21.11 won't work."],
+  ["У меня уже есть привилегия. Сколько платить за выше?","I already have a rank. How much is an upgrade?","Только разницу. Выбери привилегию и укажи, какая у тебя сейчас.","Only the difference. Pick the rank and choose the one you have now."],
+  ["Сохранятся ли привилегии после вайпа?","Do ranks survive a wipe?","Да, привилегии навсегда. Ключи кейсов тоже переносятся.","Yes, ranks are permanent. Case keys carry over too."],
+  ["Ошибся в нике. Что делать?","I entered the wrong nick.","Напиши в «Поддержку» или тикет в Discord и приложи чек — перенесём покупку.","Write to Support or open a Discord ticket with the receipt — we'll move the purchase."],
+  ["Можно вернуть деньги?","Can I get a refund?","Нет, донат не возвращается. Если покупка не пришла — напиши, разберёмся.","No, donations are not refundable. If a purchase didn't arrive — write to us."]
+];
+
+/* ---------- язык ---------- */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const RU_LANGS = ["ru","uk","be","kk","ky","uz","tg","tk","hy","az","ka"];
+const RU_TZ = /^(Europe\/(Moscow|Kaliningrad|Samara|Volgograd|Saratov|Ulyanovsk|Astrakhan|Kirov|Simferopol|Kyiv|Kiev|Minsk|Chisinau)|Asia\/(Yekaterinburg|Omsk|Novosibirsk|Barnaul|Tomsk|Novokuznetsk|Krasnoyarsk|Irkutsk|Chita|Yakutsk|Vladivostok|Magadan|Sakhalin|Kamchatka|Anadyr|Almaty|Bishkek|Tashkent|Samarkand|Dushanbe|Ashgabat|Baku|Yerevan|Tbilisi))$/;
+function detectLang(){
+  try{const s=localStorage.getItem("bros-lang");if(s==="ru"||s==="en")return s}catch(e){}
+  const ls=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||""]).map(l=>String(l).toLowerCase());
+  if(ls.some(l=>RU_LANGS.includes(l.split("-")[0])))return"ru";
+  let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+  return RU_TZ.test(tz)?"ru":"en";
+}
+let LANG = detectLang();
+const T = (ru, en) => LANG === "en" ? en : ru;
+const rub = n => n.toLocaleString("ru-RU") + " ₽";
+const eur = n => LANG === "en" ? "€" + n.toFixed(2) : n.toFixed(2).replace(".", ",") + " €";
+const usd = n => "$" + n.toLocaleString(LANG === "en" ? "en-US" : "ru-RU");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function applyLang(){
+  document.documentElement.lang = LANG;
+  $$("[data-en]").forEach(el=>{
+    if(el.dataset.ru===undefined) el.dataset.ru = el.innerHTML;
+    el.innerHTML = LANG==="en" ? el.dataset.en : el.dataset.ru;
+  });
+  $$("[data-en-ph]").forEach(el=>{
+    if(el.dataset.ruPh===undefined) el.dataset.ruPh = el.placeholder;
+    el.placeholder = LANG==="en" ? el.dataset.enPh : el.dataset.ruPh;
+  });
+  $$(".lang button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===LANG)));
+  renderAll();
+}
+$$(".lang button").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;try{localStorage.setItem("bros-lang",LANG)}catch(e){}applyLang()});
+
+/* ---------- страницы ---------- */
+const VIEWS = ["home","play","features","guide","shop","rules","help"];
+const onShopHost = location.hostname.startsWith("shop.");
+let GUIDE_ID=null;
+function show(v){
+  if(v.startsWith("g-")&&GUIDES[v.slice(2)]){GUIDE_ID=v.slice(2);renderGuide();v="guide";}
+  else if(!VIEWS.includes(v)) v = onShopHost ? "shop" : "home";
+  $$("section.view").forEach(s=>s.classList.toggle("on", s.id==="v-"+v));
+  $$(".nav a").forEach(a=>a.classList.toggle("on", a.dataset.go===v));
+  $("#nav").classList.remove("open"); $("#burger").setAttribute("aria-expanded","false");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+const MAIN="https://bros-mc.com";
+function route(){
+  const h=(location.hash||"").replace("#","");
+  // магазин живёт на shop.bros-mc.com, всё остальное — на bros-mc.com
+  if(onShopHost && h && h!=="shop"){ location.replace(MAIN+"/#"+h); return; }
+  show(h || (onShopHost ? "shop" : "home"));
+}
+window.addEventListener("hashchange", route);
+// «Донат» на главном сайте ведёт на shop.bros-mc.com
+if(location.hostname==="bros-mc.com"||location.hostname==="www.bros-mc.com"){
+  $$('[data-go="shop"]').forEach(a=>a.href="https://"+CONFIG.shopHost+"/");
+}
+if(onShopHost){
+  $$('a[data-go]:not([data-go="shop"])').forEach(a=>a.href=MAIN+"/#"+a.dataset.go);
+}
+$("#burger").onclick=()=>{const o=$("#nav").classList.toggle("open");$("#burger").setAttribute("aria-expanded",String(o))};
+
+/* ---------- мелочи ---------- */
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1800)}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-copy]"); if(!b) return;
+  const v=b.dataset.copy;
+  (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast(T("Скопировано: ","Copied: ")+v)).catch(()=>{
+    const i=document.createElement("input");i.value=v;document.body.appendChild(i);i.select();try{document.execCommand("copy");toast(T("Скопировано: ","Copied: ")+v)}catch(x){}i.remove();
+  });
+});
+
+/* ---------- статус сервера ---------- */
+async function status(){
+  try{
+    const r=await fetch("https://api.mcsrvstat.us/3/"+CONFIG.serverAddress,{cache:"no-store"});
+    const j=await r.json();
+    if(j.online){$("#st-dot").classList.add("on");const n=j.players?j.players.online:0;$("#st-text").dataset.ru="Онлайн: "+n;$("#st-text").dataset.en="Online: "+n;}
+    else{$("#st-text").dataset.ru="Сервер перезапускается";$("#st-text").dataset.en="Server is restarting";}
+  }catch(e){$("#st-text").dataset.ru="Сервер работает";$("#st-text").dataset.en="Server is up";}
+  $("#st-text").innerHTML=T($("#st-text").dataset.ru,$("#st-text").dataset.en);
+}
+
+/* ---------- магазин ---------- */
+const state={sel:{},from:"",qty:1};
+const nm = x => LANG==="en" && x.nameEn ? x.nameEn : x.name;
+function card(it, cat){
+  const sel = state.sel[cat]===it.id;
+  const top = it.isNew ? `<span class="badge">${T("новинка","new")}</span>` : it.hot ? `<span class="badge">${T("хит","hit")}</span>` : "";
+  const title = cat==="money" ? usd(it.amount) : esc(nm(it));
+  const unit = cat==="ranks" ? T("навсегда","forever") : cat==="cases" ? T("за ключ","per key") : cat==="pass" ? T("на сезон","season") : "";
+  const price = LANG==="en" ? eur(it.eur) : rub(it.price);
+  return `<button type="button" class="item${sel?" sel":""}" data-cat="${cat}" data-id="${it.id}" aria-pressed="${sel}">${top}
+    <span class="bar" style="background:${it.color||"var(--gold)"}"></span><span class="nm">${title}</span>
+    <span class="pr">${price} <small>${unit}</small></span></button>`;
+}
+function list(cat){return cat==="ranks"?RANKS:cat==="cases"?CASES:cat==="pass"?PASS:MONEY}
+function renderGrids(){ for(const c of ["ranks","cases","pass","money"]) $("#g-"+c).innerHTML=list(c).map(i=>card(i,c)).join(""); }
+function priceOf(cat,it){
+  let p={rub:it.price,eur:it.eur};
+  if(cat==="ranks"&&state.from){const f=RANKS.find(r=>r.id===state.from);if(f&&f.price<it.price)p={rub:it.price-f.price,eur:Math.max(0.49,+(it.eur-f.eur).toFixed(2))};}
+  if(cat==="cases"){p={rub:it.price*state.qty,eur:+(it.eur*state.qty).toFixed(2)};}
+  return p;
+}
+function renderDetail(cat){
+  const box=$("#d-"+cat), id=state.sel[cat];
+  if(!id){box.classList.remove("on");box.innerHTML="";return;}
+  const it=list(cat).find(x=>x.id===id); let body="";
+  if(cat==="ranks"){
+    const lower=RANKS.filter(r=>r.price<it.price);
+    body=`<p class="lead">${T("Привилегия навсегда. Не сгорает при вайпе.","Permanent rank. Survives wipes.")}</p>
+      <ul class="perks">${(LANG==="en"?it.en:it.ru).map(p=>`<li>${p}</li>`).join("")}</ul>
+      ${lower.length?`<label class="f" for="from">${T("У меня уже есть","I already have")}</label>
+      <select class="in" id="from" style="max-width:280px;margin-bottom:16px"><option value="">${T("— ничего —","— nothing —")}</option>${lower.map(r=>`<option value="${r.id}"${state.from===r.id?" selected":""}>${esc(nm(r))}</option>`).join("")}</select>`:""}`;
+  }else if(cat==="cases"){
+    body=`<p class="lead">${LANG==="en"?it.en:it.ru}</p><div class="odds">${it.odds.map(o=>`<div class="odd"><span>${esc(LANG==="en"&&o[1]?o[1]:o[0])}</span><span class="t"><i style="width:${Math.max(2,o[2])}%;background:${o[3]}"></i></span><b>${o[2]}%</b></div>`).join("")}</div>`;
+  }else if(cat==="pass"){
+    body=`<ul class="perks">${(LANG==="en"?it.en:it.ru).map(p=>`<li>${p}</li>`).join("")}</ul>`;
+  }else{
+    body=`<p class="lead">${T("Деньги придут на игровой баланс. Курс: ","Money goes to your in-game balance. Rate: ")}${rub(Math.round(it.price/(it.amount/1000)*10)/10)} ${T("за $1 000","per $1,000")}</p>`;
+  }
+  const p=priceOf(cat,it);
+  const qty=cat==="cases"?`<div class="qty"><button type="button" data-q="-1" aria-label="−">−</button><span id="q">${state.qty}</span><button type="button" data-q="1" aria-label="+">+</button></div>`:"";
+  box.innerHTML=`<h4>${cat==="money"?usd(it.amount):esc(nm(it))}</h4>${body}
+    <div class="buyrow"><div class="sum">${LANG==="en"?eur(p.eur):rub(p.rub)}<small>${LANG==="en"?"":T("картой / PayPal: ","card / PayPal: ")+eur(p.eur)}</small></div>${qty}
+    <button class="btn btn-gold" type="button" data-buy="${cat}">${T("Купить","Buy")}</button></div>
+    <div class="msg" id="m-${cat}"></div>`;
+  box.classList.add("on");
+  const f=box.querySelector("#from"); if(f) f.onchange=()=>{state.from=f.value;renderDetail(cat)};
+}
+function renderAll(){
+  renderGrids(); for(const c of ["ranks","cases","pass","money"]) renderDetail(c);
+  $("#feat-grid").innerHTML=FEATURES.map(f=>`<a class="tile card" href="#g-${f.id}"><span class="go">→</span><div class="ic">${f.ic}</div><h3>${T(f.ru,f.en)}</h3><p>${T(f.dru,f.den)}</p></a>`).join("");
+  renderGuide();
+  $("#faq").innerHTML=FAQ.map(q=>`<details><summary>${T(q[0],q[1])}</summary><p>${T(q[2],q[3])}</p></details>`).join("");
+  status();
+}
+document.addEventListener("click",e=>{
+  const it=e.target.closest(".item");
+  if(it){const c=it.dataset.cat;state.sel[c]=state.sel[c]===it.dataset.id?null:it.dataset.id;if(c==="ranks")state.from="";if(c==="cases")state.qty=1;renderGrids();renderDetail(c);
+    if(state.sel[c])setTimeout(()=>$("#d-"+c).scrollIntoView({behavior:"smooth",block:"nearest"}),50);return;}
+  const q=e.target.closest("[data-q]");
+  if(q){state.qty=Math.min(20,Math.max(1,state.qty+(+q.dataset.q)));renderDetail("cases");return;}
+  const b=e.target.closest("[data-buy]"); if(b) buy(b.dataset.buy, b);
+});
+function nick(){
+  let n=$("#nick").value.trim().replace(/\s+/g,"_");
+  if($("#bedrock").checked&&n&&!n.startsWith("[BK]")) n="[BK]"+n;
+  return n;
+}
+function say(cat,cls,t){const m=$("#m-"+cat);m.className="msg on "+cls;m.innerHTML=t;}
+async function buy(cat,btn){
+  const n=nick(), raw=n.replace(/^\[BK\]/,"");
+  if(!/^[A-Za-z0-9_]{3,16}$/.test(raw)){
+    say(cat,"err",T("Сначала впиши свой ник наверху (3–16 латинских букв, цифр или _).","First enter your nick at the top (3–16 latin letters, digits or _)."));
+    $("#nick").focus();$("#nick").scrollIntoView({behavior:"smooth",block:"center"});return;
+  }
+  const id=state.sel[cat], key=cat==="ranks"&&state.from?state.from+"_"+id:id, pid=CONFIG.tebex.packages[key];
+  if(!CONFIG.tebex.token||!pid){
+    say(cat,"info",T(`Оплата скоро заработает. Пока можно купить через администрацию: напиши в <a href="https://discord.gg/5RdwEwAwhk" target="_blank" rel="noopener">Discord</a> или <a href="https://t.me/Bros_MC" target="_blank" rel="noopener">Telegram</a> — ник <b>${esc(n)}</b>.`,`Payments are coming soon. For now you can buy via the staff: write on <a href="https://discord.gg/5RdwEwAwhk" target="_blank" rel="noopener">Discord</a> or <a href="https://t.me/Bros_MC" target="_blank" rel="noopener">Telegram</a> — nick <b>${esc(n)}</b>.`));
+    return;
+  }
+  btn.disabled=true; say(cat,"info",T("Открываем оплату…","Opening checkout…"));
+  try{
+    const api="https://headless.tebex.io/api";
+    const r=await fetch(`${api}/accounts/${CONFIG.tebex.token}/baskets`,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({complete_url:location.origin+"/?paid=1#shop",cancel_url:location.origin+"/#shop",complete_auto_redirect:true,username:n})});
+    const basket=(await r.json()).data;
+    const add=await fetch(`${api}/baskets/${basket.ident}/packages`,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({package_id:pid,quantity:cat==="cases"?state.qty:1})});
+    if(!add.ok) throw new Error("add");
+    location.href=basket.links.checkout;
+  }catch(e){
+    btn.disabled=false;
+    say(cat,"err",T("Не получилось открыть оплату. Попробуй ещё раз или напиши в поддержку.","Couldn't open checkout. Try again or contact support."));
+  }
+}
+if(new URLSearchParams(location.search).get("paid")) setTimeout(()=>toast(T("Спасибо за покупку! Придёт за пару минут.","Thanks! It will arrive in a couple of minutes.")),400);
+
+/* ---------- поддержка ---------- */
+const SUP={files:[],max:24*1024*1024,cool:30*60*1000};
+function supLeft(){try{return Math.max(0,(+localStorage.getItem("bros-sup")||0)+SUP.cool-Date.now())}catch(e){return 0}}
+function fmtMB(b){return (b/1048576).toFixed(1).replace(".",LANG==="en"?".":",")+(LANG==="en"?" MB":" МБ")}
+function renderFiles(){
+  const tot=SUP.files.reduce((a,f)=>a+f.size,0);
+  $("#s-list").innerHTML=SUP.files.map((f,i)=>`<div class="fl">${f.type.startsWith("video")?`<video src="${f.url}" muted playsinline></video>`:`<img src="${f.url}" alt="">`}<span>${esc(f.name)} · ${fmtMB(f.size)}</span><button type="button" data-rm="${i}" aria-label="×">×</button></div>`).join("")+
+    (SUP.files.length?`<div class="note" style="grid-column:1/-1;margin:0">${T("Всего","Total")}: ${fmtMB(tot)} / 24 ${T("МБ","MB")}</div>`:"");
+}
+function addFiles(list){
+  const m=$("#s-msg");
+  for(const f of list){
+    if(!/^(image|video)\//.test(f.type)){m.className="msg on err";m.textContent=T("Можно только фото и видео.","Only photos and videos.");continue;}
+    if(SUP.files.length>=6){m.className="msg on err";m.textContent=T("Не больше 6 файлов.","Up to 6 files.");break;}
+    if(SUP.files.reduce((a,x)=>a+x.size,0)+f.size>SUP.max){m.className="msg on err";m.textContent=T("Слишком большой файл: всего до 24 МБ. Длинное видео загрузи на YouTube или Google Диск и вставь ссылку ниже.","Too big: 24 MB total. Upload a long video to YouTube or Google Drive and paste the link below.");continue;}
+    f.url=URL.createObjectURL(f);SUP.files.push(f);
+  }
+  renderFiles();
+}
+$("#s-files").addEventListener("change",e=>{addFiles([...e.target.files]);e.target.value=""});
+$("#s-list").addEventListener("click",e=>{const b=e.target.closest("[data-rm]");if(!b)return;const f=SUP.files.splice(+b.dataset.rm,1)[0];URL.revokeObjectURL(f.url);renderFiles()});
+const drop=$("#s-drop");
+["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over")}));
+["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over")}));
+drop.addEventListener("drop",e=>addFiles([...e.dataTransfer.files]));
+function supDone(ticket,mail){
+  $("#sup-form").innerHTML=`<div class="done"><div class="big">✅</div><h3>${T("Обращение отправлено!","Your request has been sent!")}${ticket?` <span style="color:var(--gold)">#${esc(ticket)}</span>`:""}</h3>
+    <p>${T("Ответ придёт на","The answer will come to")} <b>${esc(mail||"")}</b> — ${T("проверь и папку «Спам».","check the Spam folder too.")}</p>
+    <p>${T("Пожалуйста, не отправляй несколько писем подряд — это не ускорит ответ. Следующее обращение можно отправить через 30 минут.","Please don't send several messages in a row — it won't speed up the answer. You can send the next one in 30 minutes.")}</p></div>`;
+}
+function supWait(){
+  const left=supLeft(); if(!left) return false;
+  const m=$("#s-msg"); m.className="msg on info";
+  m.textContent=T(`Ты уже отправил обращение. Новое можно через ${Math.ceil(left/60000)} мин. Несколько писем подряд не ускорят ответ.`,`You've already sent a request. Next one in ${Math.ceil(left/60000)} min. Several messages won't speed up the answer.`);
+  return true;
+}
+$("#sup-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const m=$("#s-msg"), send=$("#s-send");
+  const bad=t=>{m.className="msg on err";m.textContent=t};
+  if($("#s-hp").value) return;
+  if(supWait()) return;
+  const d={nick:$("#s-nick").value.trim(),mail:$("#s-mail").value.trim(),topic:$("#s-topic").value,text:$("#s-text").value.trim(),link:$("#s-link").value.trim()};
+  if(!/^\[?[A-Za-z0-9_\]]{3,20}$/.test(d.nick)) return bad(T("Проверь ник (латиница, цифры, _).","Check your nick (latin letters, digits, _)."));
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.mail)) return bad(T("Проверь почту — на неё придёт ответ.","Check your email — the answer goes there."));
+  if(d.text.length<10) return bad(T("Опиши подробнее (хотя бы пару предложений).","Please describe it in more detail."));
+  if(d.link&&!/^https?:\/\/\S+$/.test(d.link)) return bad(T("Ссылка должна начинаться с https://","The link must start with https://"));
+  const fd=new FormData(); for(const k in d) fd.append(k,d[k]); fd.append("lang",LANG); SUP.files.forEach(f=>fd.append("files",f,f.name));
+  const pr=$("#s-prog"); pr.hidden=false; send.disabled=true; m.className="msg";
+  const x=new XMLHttpRequest(); x.open("POST",CONFIG.supportApi);
+  x.upload.onprogress=ev=>{if(ev.lengthComputable){const p=Math.round(ev.loaded/ev.total*100);pr.querySelector("i").style.width=p+"%";pr.querySelector("span").textContent=(p<100?p+"%":T("Отправляем письмо…","Sending…"))}};
+  x.onload=()=>{
+    let j={};try{j=JSON.parse(x.responseText)}catch(err){}
+    pr.hidden=true; send.disabled=false;
+    if(x.status===200&&j.ok){try{localStorage.setItem("bros-sup",Date.now())}catch(err){} supDone(j.ticket,d.mail); return;}
+    if(j.error==="cooldown"){try{localStorage.setItem("bros-sup",Date.now()-SUP.cool+j.wait*60000)}catch(err){} supWait(); return;}
+    const E={nick:T("Проверь ник.","Check your nick."),mail:T("Проверь почту.","Check your email."),text:T("Опиши подробнее.","Describe it in more detail."),size:T("Файлы больше 24 МБ.","Files exceed 24 MB."),type:T("Можно только фото и видео.","Only photos and videos."),link:T("Проверь ссылку.","Check the link.")};
+    bad((E[j.error]||T("Не отправилось. Попробуй позже или напиши в Discord / Telegram.","Not sent. Try later or write on Discord / Telegram."))+(j.error&&!E[j.error]?" ("+j.error+")":"")+(x.status&&!j.error?" (HTTP "+x.status+")":""));
+  };
+  x.onerror=()=>{pr.hidden=true;send.disabled=false;bad(T("Нет связи. Попробуй ещё раз или напиши в Discord / Telegram.","Connection error. Try again or write on Discord / Telegram."))};
+  x.send(fd);
+});
+supWait();
+
+/* ---------- фон: искры как в лаунчере ---------- */
+(()=>{
+  const c=$("#fx"),g=c.getContext("2d");let W,H,P=[];
+  const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight;P=Array.from({length:Math.min(70,Math.round(W*H/22000))},()=>({x:Math.random(),y:Math.random(),s:2+Math.random()*3,v:.015+Math.random()*.04,ph:Math.random()*6.3}))}
+  size();addEventListener("resize",size);
+  let t0=performance.now();
+  function f(t){const dt=Math.min(.05,(t-t0)/1000);t0=t;g.clearRect(0,0,W,H);
+    for(const p of P){p.y-=p.v*dt;if(p.y<-.05)p.y=1.05;const sw=Math.sin(t/1000*.6+p.ph)*.01;const tw=(Math.sin(t/1000*1.4+p.ph*3)*.5+.5)*.7+.3;
+      g.fillStyle=p.ph>3.1?`rgba(255,184,40,${.3*tw})`:`rgba(255,120,40,${.18*tw+.05})`;g.fillRect((p.x+sw)*W,p.y*H,p.s,p.s)}
+    requestAnimationFrame(f)}
+  if(!rm)requestAnimationFrame(f);
+})();
+
+applyLang(); route();
+</script>
+</body>
+</html>
