@@ -570,7 +570,7 @@ function craft(cells,out,n,title){
   return `<div class="craft"><div><div class="ttl">${title||T("Верстак","Crafting")}</div><div class="gr">${cells.map(c=>slot(c)).join("")}</div></div><div class="ar"></div><div class="sl out">${slot(out,n).replace(/^<div class="sl"[^>]*>|<\/div>$/g,"")}</div></div>`;
 }
 function furnace(inp,out){
-  return `<div class="craft"><div><div class="ttl">${T("Печь","Furnace")}</div><div class="fur">${slot(inp)}<div></div><div></div><div class="fire">🔥</div><div class="ar" style="grid-column:2;grid-row:2"></div><div class="sl out" style="grid-column:3;grid-row:2">${slot(out).replace(/^<div class="sl"[^>]*>|<\/div>$/g,"")}</div><div class="sl" style="grid-column:1;grid-row:3"></div></div></div></div>`;
+  return `<div class="craft"><div><div class="ttl">${T("Печь","Furnace")}</div><div class="fur">${slot(inp)}<div></div><div></div><div class="fire"><img src="${IMG('mc_fire')}" alt="" style="width:30px;height:30px;image-rendering:pixelated"></div><div class="ar" style="grid-column:2;grid-row:2"></div><div class="sl out" style="grid-column:3;grid-row:2">${slot(out).replace(/^<div class="sl"[^>]*>|<\/div>$/g,"")}</div><div class="sl" style="grid-column:1;grid-row:3"></div></div></div></div>`;
 }
 const N=null;
 
@@ -636,11 +636,11 @@ duels: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</sp
 start: () => `<div class="gd"><span class="eyebrow">${T("Гайд","Guide")}</span><h2>${T("С чего начать","Getting started")}</h2>
 <ol><li>${T("<b>Зайди</b> на <code>play.bros-mc.com</code> (Java 1.21.11+ или Bedrock). Сервер сам попросит придумать пароль — запомни его.","<b>Join</b> <code>play.bros-mc.com</code> (Java 1.21.11+ or Bedrock). The server asks you to set a password — remember it.")}</li>
 <li>${T("Возьми стартовый набор: <code>/kit start</code>. Первые <b>$1000</b> на балансе защищены — их не отберут при смерти.","Grab the starter kit: <code>/kit start</code>. Your first <b>$1000</b> are protected — nobody takes them when you die.")}</li>
-<li>${T("Уходи со спавна: <code>/rtp</code> — случайный телепорт подальше от людей. Это анархия: на спавне опасно.","Leave spawn: <code>/rtp</code> — random teleport away from people. It's anarchy: spawn is dangerous.")}</li>
+<li>${T("В мир выживания: прыгни в яму на спавне или <code>/rtp</code> — случайное место подальше от людей. На спавне PvP нет, а в мире — анархия.","To the survival world: jump into the pit at spawn or use <code>/rtp</code> — a random spot away from people. Spawn has no PvP; the world is anarchy.")}</li>
 <li>${T("Первые деньги: <code>/mine</code> — автошахта, руду продавай скупщику шахты; квесты гильдии <code>/guild</code> — каждый день.","First money: <code>/mine</code> — the auto-mine, sell ore to the mine buyer; guild quests <code>/guild</code> — every day.")}</li>
 <li>${T("Поставь <b>дом</b> <code>/sethome</code> и <b>приват</b>: блок-ядро из <code>/shop</code> — <code>/privat help</code>. Без привата базу могут разграбить.","Set a <b>home</b> <code>/sethome</code> and a <b>claim</b>: a core block from <code>/shop</code> — <code>/privat help</code>. Without a claim your base can be raided.")}</li>
 <li>${T("Прячь деньги: <code>/cash</code> превращает их в купюры — положи в эндер-сундук, и при смерти ничего не потеряешь.","Hide money: <code>/cash</code> turns it into banknotes — put them in the ender chest and you lose nothing on death.")}</li>
-<li>${T("Найди друзей: <code>/clan</code> — клан, союзы, общий сундук и подсветка своих <code>/clan glow</code>.","Find friends: <code>/clan</code> — a clan, alliances, a shared chest and outlines for clanmates <code>/clan glow</code>.")}</li>
+<li>${T("Играй с друзьями: <code>/clan</code> — свой клан и общий сундук.","Play with friends: <code>/clan</code> — your own clan and a shared chest.")}</li>
 <li>${T("Привяжи Discord: <code>/discord</code> — защита аккаунта и профиль с твоим инвентарём.","Link Discord: <code>/discord</code> — account protection and a profile with your inventory.")}</li>
 <li>${T("Дальше — <b>майнинг-ферма</b>, замки с боссами, дуэли и боевой пропуск. Все команды — <code>/help</code>, все крафты — <code>/recipes</code>.","Next — a <b>mining farm</b>, castles with bosses, duels and the battle pass. All commands — <code>/help</code>, all crafts — <code>/recipes</code>.")}</li></ol></div>`,
 
